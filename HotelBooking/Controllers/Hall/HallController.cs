@@ -97,5 +97,31 @@ namespace HotelBooking.Controllers.Hall
             }
             return _resp;
         }
+        ///Hall Services
+        [Route("api/Hall/GetHallServices/{BranchId}")]
+        [HttpGet]
+        public IEnumerable<HallServices> GetHallServices(int BranchId)
+        {
+            return _hall.GetHallServices(BranchId);
+        }
+        [Route("api/Hall/SaveHallService")]
+        [HttpPost]
+        public bool SaveHallService(HallServices hallServiceEntity)
+        {
+            return _hall.SaveHallService(hallServiceEntity);
+        }
+        [Route("api/Hall/GetHallService/{HallServiceId}")]
+        [HttpGet]
+        public HallServices GetHallService(int HallServiceId)
+        {
+            return _hall.GetHallService(HallServiceId);
+        }
+
+        [Route("api/Hall/GetHallServiceCategory/{BranchId}")]
+        [HttpGet]
+        public IEnumerable<HallServiceCategory> GetHallServiceCategory(int BranchId)
+        {
+            return _hall.GetHallServicesCategory(BranchId);
+        }
     }
 }

@@ -24,6 +24,7 @@ namespace HotelBooking.Model
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
         public bool isVIP { get; set; }
+        public bool isBlackListed { get; set; }
 
 
 

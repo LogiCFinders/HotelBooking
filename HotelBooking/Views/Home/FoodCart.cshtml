@@ -647,7 +647,8 @@
                 Quantity: txtQty,
                 Amount: txtAmount,
                 Tax: Number(tp / 100).toFixed(2),
-                TaxAmount: txtAount
+                TaxAmount: txtAount,
+                OrderStatus:'Pending'
             }
             BillingMaster.BillingDetails.push(items);
         });

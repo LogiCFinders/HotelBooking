@@ -48,6 +48,8 @@ using iTextSharp.text.pdf.qrcode;
 using System.Web.Script.Serialization;
 using HotelBooking.Model.Hall;
 using HotelBooking.Controllers.Hall;
+using System.Web.Management;
+using iTextSharp.tool.xml.html.head;
 
 #endregion
 
@@ -1862,6 +1864,7 @@ namespace HotelBooking.Controllers
             var GS1 = _bm.GetAllGuests(branchId);
 
             ViewBag.NumberOfVIP = GS1.Where(v => v.isVIP == true).Count();
+            ViewBag.NumberOfBL = GS1.Where(v => v.isBlackListed == true).Count();
             ViewBag.NumberOfGuest = GS1.Count();
 
             if (!String.IsNullOrEmpty(txtSearchData))
@@ -2429,6 +2432,7 @@ namespace HotelBooking.Controllers
         {
             int branchId = int.Parse(Session["BranchId"].ToString());
             BranchController _br = new BranchController();
+            CommonController _cc = new CommonController();
 
             IEnumerable<HotelBooking.Model.TimeZone.TimeZone> tz = _br.GetTimeZone();
            
@@ -2443,10 +2447,45 @@ namespace HotelBooking.Controllers
                 lsttz.Add(new SelectListItem { Text = item.TZ_Name, Value = item.TZID.ToString(), Selected = (k==editHotelData.GeneralInformation.TimeZone) });
                 k++;
             }
-
+          
 
             ViewBag.TZComboModel = lsttz;
 
+            IEnumerable<PropertyType> htlTypes = _cc.GetHotelTypes();
+
+            List<SelectListItem> htltypeList = new List<SelectListItem>();
+            htltypeList.Add(new SelectListItem { Text = "Select a  Property Type", Value = "0" });
+          
+            foreach (var item in htlTypes)
+            {
+                bool sel = false;
+                if(editHotelData.GeneralInformation.HotelType==item.PropertyTypeName)
+                {
+                    sel = true;
+                }
+                htltypeList.Add(new SelectListItem { Text = item.PropertyTypeName.ToString(), Value = item.PropertyTypeName.ToString(),Selected=sel });
+               
+            }
+            ViewBag.HotelTypesComboModel = htltypeList;
+
+            //Currencry
+            IEnumerable<Currency> htlCurr = _cc.GetHotelCurrency();
+
+            List<SelectListItem> htlCurrList = new List<SelectListItem>();
+            htlCurrList.Add(new SelectListItem { Text = "Select a  Business Currency", Value = "0" });
+
+            foreach (var item in htlCurr)
+            {
+
+                bool sel = false;
+                if (editHotelData.GeneralInformation.HotelCurrency == item.CurrencyCode)
+                {
+                    sel = true;
+                }
+                htlCurrList.Add(new SelectListItem { Text = item.CurrencyName+"("+item.CurrencyCode+")", Value = item.CurrencyCode.ToString(),Selected=sel });
+
+            }
+            ViewBag.HotelCurrComboModel = htlCurrList;
             return View(editHotelData);
         }
         public bool updateGenInfo(VM_GeneralInfo branchGenEntity)
@@ -3126,9 +3165,11 @@ namespace HotelBooking.Controllers
         {
             bool rtnVal;
             int branchId = int.Parse(Session["BranchId"].ToString());
+            int UserId = int.Parse(Session["Logged_In_User"].ToString());
 
             RestaurantController _rt = new RestaurantController();
 
+            billingmasterEntity.OrderedBy = UserId;
             rtnVal = _rt.SaveFoodCart(billingmasterEntity);
 
             return rtnVal;
@@ -3358,12 +3399,34 @@ namespace HotelBooking.Controllers
 
             return Json(servicesList.ToArray(), JsonRequestBehavior.AllowGet);
         }
+        //KOT
+        public ActionResult GetKOTList(int RestaurantId = 0)
+        {
+            RestaurantController rc = new RestaurantController();
+            return View("KOTList", rc.GetKOT(RestaurantId));
+        }
+        //My Order - for order Taken By
 
+        public ActionResult GetMyOrderList(int RestaurantId = 0)
+        {
+            int LoggedInuserId = int.Parse(Session["Logged_In_User"].ToString());
+            RestaurantController rc = new RestaurantController();
+            var myorder = rc.GetMyOrders(RestaurantId, LoggedInuserId);
+            return View("GetMyOrderList",myorder );
+        }
+
+
+        [HttpPost]
+        public JsonResult SetOrderStatus(SedtOrderStatusRequest sor)
+        {
+
+            RestaurantController rc = new RestaurantController();
+            bool rtnVal = rc.SetOrderStatus(sor);
+            return Json(rtnVal, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public JsonResult TaxProviders(int BranchId)
         {
-
-
 
             List<string> servicesList = new List<string>();
             TaxController _tm = new TaxController();
@@ -4549,6 +4612,15 @@ namespace HotelBooking.Controllers
             ViewBag.Slots = hlslotlitems;
             ViewBag.BranchId = branchId;
 
+            //Get Service like Decoration , food Stall, transportation
+            IEnumerable<HallServices> allServices = _hc.GetHallServices(branchId);
+            IEnumerable<HallServices> allDecor = allServices.Where(d => d.Category.ToUpper() == "DECOR");
+            IEnumerable<HallServices> allStall = allServices.Where(d => d.Category.ToUpper() == "STALL");
+            IEnumerable<HallServices> allTransport = allServices.Where(d => d.Category.ToUpper() == "TRANS");
+
+            ViewBag.Decoration = allDecor;
+            ViewBag.Stall = allStall;
+            ViewBag.Trans = allTransport;
 
 
             return View("HallBooking");
@@ -4607,7 +4679,45 @@ namespace HotelBooking.Controllers
             HallController _hc = new HallController();
 
             HallBooking hlb = _hc.GetHallBookings(branchId).Where(b => b.HallBookingId == HallBookingId).SingleOrDefault();
+
+            IEnumerable<HallServices> allServices = _hc.GetHallServices(branchId);
+            IEnumerable<HallServices> allDecor = allServices.Where(d => d.Category.ToUpper() == "DECOR");
+            IEnumerable<HallServices> allStall = allServices.Where(d => d.Category.ToUpper() == "STALL");
+            IEnumerable<HallServices> allTransport = allServices.Where(d => d.Category.ToUpper() == "TRANS");
+
+            IEnumerable<HallBookingCost> hbcosting= _hc.GetHallBookingCost(branchId, hlb.HallBookingId);
+            List<HallServices> hallDecorServices = new List<HallServices>();
+            List<HallServices> hallStall = new List<HallServices>();
+            List<HallServices> hallVehicle = new List<HallServices>();
+            foreach (var a in allServices)
+            {
+                var isEx = hbcosting.Where(s => s.ServiceId == a.ServiceId && s.Status=="SVC").FirstOrDefault();
+                if (isEx != null)
+                {
+                    a.isSelected = true;
+                }
+                if(a.Category.ToUpper() == "DECOR")
+                {
+                    hallDecorServices.Add(a);
+                }
+                if (a.Category.ToUpper() == "STALL")
+                {
+                    hallStall.Add(a);
+                }
+                if (a.Category.ToUpper() == "TRANS")
+                {
+                    hallVehicle.Add(a);
+                }
+
+            }
+
+
+            ViewBag.Decoration = hallDecorServices;
+            ViewBag.Stall = hallStall;
+            ViewBag.Trans = hallVehicle;
+
             hlb.HallBookingCosting = _hc.GetHallBookingCost(branchId, hlb.HallBookingId);
+
             hlb.HallBookingPayment = _hc.GetHallBookingPayment(branchId, hlb.HallBookingId);
             RestaurantController _rc = new RestaurantController();
             IEnumerable<restaurantBuffetMenu> bmLst = _rc.GetBuffetmenus(branchId);
@@ -4665,10 +4775,46 @@ namespace HotelBooking.Controllers
 
             int branchId = int.Parse(Session["BranchId"].ToString());
             HallController _hc = new HallController();
-
+            IEnumerable<HallServices> allServices = _hc.GetHallServices(branchId);
             HallBooking hlb = _hc.GetHallBookings(branchId).Where(b => b.HallBookingId == HallBookingId).SingleOrDefault();
             hlb.HallBookingCosting = _hc.GetHallBookingCost(branchId, hlb.HallBookingId);
             hlb.HallBookingPayment = _hc.GetHallBookingPayment(branchId, hlb.HallBookingId);
+
+
+            List<HallServices> hallDecorServices = new List<HallServices>();
+            List<HallServices> hallStall = new List<HallServices>();
+            List<HallServices> hallVehicle = new List<HallServices>();
+            foreach (var a in allServices)
+            {
+                var isEx = hlb.HallBookingCosting.Where(s => s.HallBookingId == HallBookingId && s.Status=="SVC").ToArray();
+                foreach(var t in isEx)
+                {
+                    if (a.ServiceId == t.ServiceId)
+                    {
+                        a.isSelected = true;
+                        if (a.Category.ToUpper() == "DECOR")
+                        {
+                           
+                            hallDecorServices.Add(a);
+                        }
+                        if (a.Category.ToUpper() == "STALL")
+                        {
+                            hallStall.Add(a);
+                        }
+                        if (a.Category.ToUpper() == "TRANS")
+                        {
+                            hallVehicle.Add(a);
+                        }
+                    }
+                }
+                
+
+            }
+
+
+            ViewBag.Decoration = hallDecorServices;
+            ViewBag.Stall = hallStall;
+            ViewBag.Trans = hallVehicle;
             RestaurantController _rc = new RestaurantController();
             IEnumerable<restaurantBuffetMenu> bmLst = _rc.GetBuffetmenus(branchId);
 
@@ -4677,6 +4823,7 @@ namespace HotelBooking.Controllers
             foreach (var item in bmLst)
             {
                 bool sl = false;
+                
                 if (item.RestaurantMenuId == hlb.MenuId) { sl = true; }
                 bmlitems.Add(new SelectListItem { Text = item.RestaurantMenuName.Trim() + "( " + item.TotalCost + " )", Value = item.RestaurantMenuId.ToString() + "-" + item.PPCost.ToString(), Selected = sl });
             }
@@ -4708,6 +4855,128 @@ namespace HotelBooking.Controllers
             // ViewBag.SeletedMenu = bm;
 
             return View("PrintHallBooking", hlb);
+        }
+
+        public ActionResult HallServices(int? page, int? pSize)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            int? DefaultPageSize = 10;
+
+            HallController _hc = new HallController();
+
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+            int pageNumber = page ?? 1;
+            IEnumerable<HallServices> trList = _hc.GetHallServices(branchId);
+            Session["BranchId"] = branchId;
+            ViewBag.BranchId = branchId;
+
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+            IPagedList<HallServices> tbkslist = trList.ToPagedList(pageNumber, (int)DefaultPageSize);
+            return View("HallServices", tbkslist);
+        }
+
+        public ActionResult AddHallServices()
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            HallController _hc = new HallController();
+            ViewBag.BranchId = branchId;
+            VM_HallServices HallServicesEntity = new VM_HallServices();
+            IEnumerable<HallServiceCategory> hlCatLst = _hc.GetHallServiceCategory(branchId);
+            List<SelectListItem> hlCatitems = new List<SelectListItem>();
+            hlCatitems.Add(new SelectListItem { Text = "Select Category", Value = "0" });
+            foreach (var item in hlCatLst)
+            {
+
+                hlCatitems.Add(new SelectListItem { Text = item.Title.Trim(), Value = item.ServiceCategoryId.ToString() });
+            }
+            ViewBag.SvcCat = hlCatitems;
+
+            return View("AddHallServices", HallServicesEntity);
+        }
+       
+        [HttpPost]
+        public ActionResult SaveHallServices(VM_HallServices HallServicesEntity, HttpPostedFileBase RTImageData)
+        {
+
+            HttpPostedFileBase postedFile = Request.Files["RTImageData"];
+           
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            
+            byte[] bytes;
+            string ContentType = string.Empty;
+            using (BinaryReader br = new BinaryReader(postedFile.InputStream))
+            {
+                bytes = br.ReadBytes(postedFile.ContentLength);
+                ContentType = postedFile.ContentType;
+            }
+            HallServicesEntity.StreamData = bytes;
+            HallServicesEntity.ContentType = ContentType;
+            HallController _cntrl = new HallController();
+            HallServices hs = new HallServices
+            {
+                BranchId = branchId,
+                ContentType = HallServicesEntity.ContentType,
+                COST = HallServicesEntity.COST,
+                Description = HallServicesEntity.Description,
+                isActive=HallServicesEntity.isActive,
+                ShortDescription=HallServicesEntity.ShortDescription,
+                StreamData=HallServicesEntity.StreamData,
+                Title=HallServicesEntity.Title,
+                Tax=HallServicesEntity.Tax,
+                TaxAmount=HallServicesEntity.TaxAmount,
+                Category= HallServicesEntity.Category
+            };
+
+            
+            bool rtnVal= _cntrl.SaveHallService(hs);
+            return RedirectToAction("HallServices");
+
+        }
+        public ActionResult ViewHallServices(int HallServiceId)
+        {
+
+            HallController _cntrl = new HallController();
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            ViewBag.BranchId = branchId;
+            HallServices HallServicesEntity = _cntrl.GetHallServices(branchId).Where(i => i.ServiceId == HallServiceId).FirstOrDefault();
+
+
+            return View("ViewHallServices", HallServicesEntity);
+        }
+
+        [HttpGet]
+        public FileResult DownloadVDOFile(int HallServiceId)
+        {
+            HallController _cntrl = new HallController();
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            HallServices HallServicesEntity = _cntrl.GetHallServices(branchId).Where(i => i.ServiceId == HallServiceId).FirstOrDefault();
+
+            
+            return File(HallServicesEntity.StreamData, HallServicesEntity.ContentType, HallServicesEntity.Title);
+        }
+        public ActionResult EditHallServices(int HallServiceId)
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            HallController _cntrl = new HallController();
+            ViewBag.BranchId = branchId;
+            HallServices HallServicesEntity = _cntrl.GetHallService(HallServiceId);
+
+
+            return View("EditHallServices", HallServicesEntity);
         }
         #endregion
     }

@@ -8,3 +8,7 @@
     [isActive] BIT NULL, 
     [isDeleted] BIT NULL
 )
+
+select * from TemplateMaster;
+
+select * from MessageAPIConfig;

@@ -78,3 +78,4 @@ function validateMyForm(eltCls) {
     });
     return isValid;
 }
+

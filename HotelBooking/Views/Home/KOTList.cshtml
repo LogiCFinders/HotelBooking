@@ -1,0 +1,357 @@
+﻿@model IEnumerable<HotelBooking.Model.Reatraurant.KOTList>
+@{
+    ViewBag.Title = "KOT List";
+}
+<style>
+    <style >
+    .RelButton {
+        width: 135px !important;
+        margin: 4px auto;
+        background: orange;
+        padding: 7px 15px;
+        border-radius: 20px;
+        display: block;
+        border: 2px solid #4ABDAC;
+        color: #fff;
+    }
+
+    .RelButton:hover {
+        width: 135px !important;
+        margin: 4px auto;
+        background: orange;
+        padding: 7px 15px;
+        border-radius: 20px;
+        display: block;
+        border: 2px solid #fff;
+        color: #fff;
+    }
+
+    .RelButtonALt {
+        width: 135px !important;
+        margin: 4px auto;
+        background: orange;
+        padding: 7px 15px;
+        border-radius: 20px;
+        display: block;
+        border: 2px solid #F7882F;
+        color: #fff;
+    }
+
+        .RelButtonALt:hover {
+            width: 135px !important;
+            margin: 4px auto;
+            background: orange;
+            padding: 7px 15px;
+            border-radius: 20px;
+            display: block;
+            border: 2px solid #FFF;
+            color: #fff;
+        }
+
+
+
+
+    .box1 {
+        color: white;
+        background-color: #4ABDAC;
+        border: 1px solid #4ABDAC;
+        font-size: 15px;
+    }
+
+        .box1 a {
+            color: #4ABDAC;
+        }
+
+    .box2 {
+        color: white;
+        background-color: #F7882F;
+        border: 1px solid #F7882F;
+        font-size: 15px;
+    }
+
+        .box2 a {
+            color: #F7882F;
+        }
+
+    .box3 {
+        color: white;
+        background-color: #6C648B;
+        border: 1px solid #6C648B;
+        font-size: 15px;
+    }
+
+        .box3 a {
+            color: #6C648B;
+        }
+
+    .box4 {
+        color: white;
+        background-color: #CF6766;
+        border: 1px solid #CF6766;
+        font-size: 15px;
+    }
+
+        .box4 a {
+            color: #CF6766;
+        }
+
+    .panel-footer {
+        padding: 10px 15px;
+        background-color: #f5f5f5;
+        border-top: 1px solid #ddd;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    .panel-body {
+        padding: 10px 15px 5px;
+    }
+</style>
+<div class="row">
+    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+        <div class="card gradient-blackberry">
+            <div class="card-body">
+                <div class="card-block pt-2 ">
+                    <div class="media">
+
+                        <div id="BookingDiv" class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">0</h3>
+                            <span>NEW</span>
+                        </div>
+                        <div class="media-right white text-right"> <i class="ft-list font-large-1"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+        <div class="card gradient-ibiza-sunset">
+            <div class="card-body">
+                <div class="card-block pt-2 ">
+                    <div class="media">
+                        <div hidden id="check_1"></div>
+                        <div hidden id="loading_1">LOADING</div>
+                        <div id="ReveneDiv" class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">28</h3>
+                            <span>PROCESSING</span>
+                        </div>
+                        <div class="media-right white text-right"> <i class="fa fa-dollar font-large-1"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+        <div class="card gradient-green-tea">
+            <div class="card-body">
+                <div class="card-block pt-2 ">
+                    <div class="media">
+                        <div hidden id="check_1"></div>
+                        <div hidden id="loading_1">LOADING</div>
+                        <div id="roomDiv" class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">10</h3>
+                            <span>READY</span>
+                        </div>
+                        <div class="media-right white text-right"> <i class="ft-home font-large-1"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+        <div class="card gradient-pomegranate">
+            <div class="card-body">
+                <div class="card-block pt-2 ">
+                    <div class="media">
+                        <div hidden id="check_1"></div>
+                        <div hidden id="loading_1">LOADING</div>
+                        <div id="guestDiv" class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">30</h3>
+                            <span>SERVED</span>
+                        </div>
+                        <div class="media-right white text-right"> <i class="ft-users font-large-1"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var tt in Model)
+    {
+
+
+        <div class="col-xl-4 col-lg-6 col-md-6 col-12">
+            <div class="card gradient-blackberry">
+                <div class="card-body">
+                    <div class="card-block pt-2 ">
+                        <div class="media">
+
+                            <div class="media-body white text-left">
+
+                                <h3 class="font-large-1 mb-0">@tt.TableNumber</h3>
+
+                            </div>
+
+                            <div class="media-right white text-right">Order By - @tt.orderedByName </div>
+
+                        </div>
+
+                        <div class="media-body white text-left">
+                            <table border="0" width="100%" style="font-size:11px">
+                                @*<tr><th>Qty</th><th>Items</th><th>Status</th><th colspan="2">Action</th></tr>*@
+                                @foreach (var itm in tt.Items)
+                                {
+                                    <tr><td>1x</td><td>@itm.ItemName</td><td>@itm.OrderStatus</td><td><a href="#" onclick="setOrderStatus(@tt.RestaurantId,@tt.BillingId,@itm.ItemId,'Process');">Process</a></td><td><a href="#" onclick="setOrderStatus(@tt.RestaurantId,@tt.BillingId,@itm.ItemId,'Ready');">Ready</a></td></tr>
+                                }
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row tablebox" style="padding: 10px;">
+    @{
+        int i = 0;
+    }
+    @foreach (var tt in Model)
+    {
+        if (i % 2 == 0)
+        {
+            <div class="col-lg-4">
+                <div class="panel box1">
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="col-6 text-left">
+                                <div class="huge tex"> Table @tt.TableNumber </div>
+                            </div>
+                            <div class="col-6 text-right">
+                                <div class="huge">@tt.orderedByName </div>
+                            </div>
+                        </div>
+                    </div>
+                    @foreach (var itm in tt.Items)
+                    {
+                        <a href="">
+                            <div class="panel-footer">
+                                <span class="pull-left">1 x  @itm.ItemName </span>
+                                <span class="pull-right">
+                                    @if (itm.OrderStatus == "Pending")
+                                    {
+                                        <i class="fa fa-arrow-circle-right"></i>
+
+                                    }
+                                    @if (itm.OrderStatus == "Process")
+                                    {
+                                        <i class="fa fa-solid fa-gears"></i>
+
+                                    }
+                                    @if (itm.OrderStatus == "Ready")
+                                    {
+                                        <i class="fa fa-solid fa-check"></i>
+
+                                    }
+
+                                </span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                        <a href="#" class="editbtn"><i class="fa fa-solid fa-gears"></i></a>
+                        <a href="#" class="editbtn"><i class="fa fa-solid fa-check"></i></a>
+                    }
+
+
+                </div>
+            </div>
+        }
+        else
+        { <div class="col-lg-4">
+              <div class="panel box2">
+                  <div class="panel-body">
+                      <div class="row">
+
+                          <div class="col-6 text-left">
+                              <div class="huge tex"> Table @tt.TableNumber </div>
+                          </div>
+                          <div class="col-6 text-right">
+                              <div class="huge">@tt.orderedByName </div>
+                          </div>
+                      </div>
+                  </div>
+                  @foreach (var itm in tt.Items)
+                  {
+                      <a href="">
+                          <div class="panel-footer">
+                              <span class="pull-left">1 x   @itm.ItemName </span>
+                              <span class="pull-right">
+                                  @if (itm.OrderStatus == "Pending")
+                                  {
+                                      <i class="fa fa-solid fa-hourglass-half"></i>
+
+                                  }
+                                  @if (itm.OrderStatus == "Process")
+                                  {
+                                      <i class="fa fa-solid fa-gears"></i>
+
+                                  }
+                                  @if (itm.OrderStatus == "Ready")
+                                  {
+                                      <i class="fa fa-solid fa-check"></i>
+
+                                  }
+
+
+                              </span>
+                              <div class="clearfix"></div>
+                          </div>
+                      </a>
+                      <a href="#" class="editbtn"> <span class="pull-right"><i class="fa fa-solid fa-gears"></i></span></a>
+                      <a href="#" class="editbtn"><i class="fa fa-solid fa-check"></i></a>
+                      
+
+                  }
+
+              </div>
+            </div>
+        }
+        i++;
+    }
+
+</div>
+<script>
+    function setOrderStatus(rId,oId,ItemId, sts) {
+        var SedtOrderStatusRequest = {
+            RestaurantId: rId,
+            OrderId: oId,
+            TableId: 1,
+            ItemId: ItemId,
+            status:sts
+        };
+          $.ajax({
+            type: "POST",
+            url: '@Url.Action("SetOrderStatus", "Home")',
+
+
+              data: { sor: SedtOrderStatusRequest }
+,
+
+                     //data: { restroEntity: restaurant },
+
+            success: function (recData) {
+
+                         console.log('Success');
+                     },
+                     error: function () {
+
+                         console.log('A error');
+                     }
+            });
+    }
+</script>

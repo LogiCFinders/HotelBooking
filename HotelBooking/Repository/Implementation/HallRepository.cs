@@ -135,17 +135,17 @@ namespace HotelBooking.Repository.Implementation
             var tmp = _context.HallBookingCost.Find(hallCostingEntity.HallBookingCostId);
             if (tmp != null)
             {
-                tmp.COST= hallCostingEntity.COST;
-                tmp.DATE= hallCostingEntity.DATE;
-                tmp.TAX= hallCostingEntity.TAX;
-                tmp.TaxAmount = hallCostingEntity.TaxAmount;
+                _context.HallBookingCost.Remove(tmp);
+                //tmp.COST= hallCostingEntity.COST;
+                //tmp.DATE= hallCostingEntity.DATE;
+                //tmp.TAX= hallCostingEntity.TAX;
+                //tmp.TaxAmount = hallCostingEntity.TaxAmount;
                 rtnVal = true;
             }
-            else
-            {
+            
                 _context.HallBookingCost.Add(hallCostingEntity);
                 rtnVal = true;
-            }
+           
             
             _context.SaveChanges();
             return rtnVal;
@@ -180,6 +180,54 @@ namespace HotelBooking.Repository.Implementation
         public IEnumerable<HallBooking> CheckHallAvailability(int HallId, DateTime bookingDate, int slotId)
         {
             return _context.HallBooking.Where(h => h.HallId == HallId && h.BookingDate == bookingDate && h.SlotId == slotId).ToArray();
+        }
+        ///Hall Services
+        ///
+        public IEnumerable<HallServices> GetHallServices(int BranchId)
+        {
+            return _context.HallServices.Where(b => b.BranchId == BranchId).ToArray();
+        }
+        public bool SaveHallService(HallServices hallServiceEntity)
+        {
+            bool rtnVal = false;
+
+            try
+            {
+                var tmphs = _context.HallServices.Find(hallServiceEntity.ServiceId);
+                if (tmphs != null) {
+                    tmphs.Title = hallServiceEntity.Title;
+                    tmphs.Description = hallServiceEntity.Description;
+                    tmphs.ShortDescription = hallServiceEntity.ShortDescription;
+                    tmphs.COST=hallServiceEntity.COST;
+                    tmphs.Tax=hallServiceEntity.Tax;
+                    tmphs.TaxAmount=hallServiceEntity.TaxAmount;
+                    tmphs.ContentType=hallServiceEntity.ContentType;
+                    tmphs.StreamData = hallServiceEntity.StreamData;
+                    tmphs.isActive = hallServiceEntity.isActive;
+                    tmphs.Category = hallServiceEntity.Category;
+                }
+                else
+                {
+                    _context.HallServices.Add(hallServiceEntity);
+                }
+                _context.SaveChanges();
+                rtnVal = true;
+            }
+            catch (Exception)
+            {
+
+                rtnVal=false;
+            }
+
+            return rtnVal;
+        }
+        public HallServices GetHallService(int HallServiceId)
+        {
+            return _context.HallServices.Where(b => b.ServiceId == HallServiceId).FirstOrDefault();
+        }
+        public IEnumerable<HallServiceCategory> GetHallServicesCategory(int BranchId)
+        {
+            return _context.HallServiceCategory.Where(b=>b.BranchId== BranchId).ToArray();
         }
     }
 }

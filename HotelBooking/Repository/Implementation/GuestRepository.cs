@@ -35,6 +35,9 @@ namespace HotelBooking.Repository.Implementation
                         tmpAmnt.Phone = guestEntity.Phone;
                         tmpAmnt.email = guestEntity.email;
                         tmpAmnt.isActive = guestEntity.isActive;
+                        tmpAmnt.isVIP = guestEntity.isVIP;
+                        tmpAmnt.isBlackListed = guestEntity.isBlackListed;
+
                         _context.SaveChanges();
                         rtnVal = true;
                     }

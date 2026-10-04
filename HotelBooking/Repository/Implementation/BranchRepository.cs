@@ -54,6 +54,14 @@ namespace HotelBooking.Repository.Implementation
         {
             return _context.Branch.ToArray();
         }
+        public IEnumerable<PropertyType> GetHotelTypes()
+        {
+            return _context.HotelType.ToArray();
+        }
+        public IEnumerable<Currency> GetCurrency()
+        {
+            return _context.HotelCurrency.ToArray();
+        }
 
         public IEnumerable<Branch> GetBranch(int CompanyId)
         {
@@ -194,6 +202,8 @@ namespace HotelBooking.Repository.Implementation
             genInfo.CheckOutTime = br.CheckOutTime;
             genInfo.NoofFloors = br.NoofFloors;
             genInfo.TimeZone = br.TimeZone;
+            genInfo.HotelType = br.HotelType;
+            genInfo.HotelCurrency = br.HotelCurrency;
 
 
 
@@ -262,6 +272,8 @@ namespace HotelBooking.Repository.Implementation
                     br.CheckOutTime = entityGenInfo.CheckOutTime;
                     br.NoofFloors = entityGenInfo.NoofFloors;
                     br.TimeZone = entityGenInfo.TimeZone;
+                    br.HotelType = entityGenInfo.HotelType;
+                    br.HotelCurrency = entityGenInfo.HotelCurrency;
                     _context.SaveChanges();
                     rtnVal = true;
                 }

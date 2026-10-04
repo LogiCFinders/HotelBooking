@@ -14,6 +14,7 @@ namespace HotelBooking.Model.Hall
         public int HallBookingCostId { get; set; }
         public int HallBookingId { get; set; }
         public int HallId { get; set; }
+        public int ServiceId { get; set; }
         public string Description { get; set; }
         public DateTime DATE { get; set; }
         public decimal COST { get; set; }
@@ -22,6 +23,7 @@ namespace HotelBooking.Model.Hall
         public decimal TaxAmount { get; set; }
         public string Status { get; set; }
         public int BranchId { get; set; }
+       
 
     }
 }

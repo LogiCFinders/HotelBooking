@@ -1,7 +1,9 @@
 ﻿
 using HotelBooking.Model;
 using HotelBooking.Model.DynamicPrice;
+using HotelBooking.Model.EditHotel;
 using HotelBooking.Model.Hall;
+using HotelBooking.Model.Messaging;
 using HotelBooking.Model.Reatraurant;
 using HotelBooking.Model.Review;
 using HotelBooking.Model.SocialMedia;
@@ -41,6 +43,16 @@ namespace HotelBooking.Context
             set;
         }
         public DbSet<HotelContacts> HotelContacts
+        {
+            get;
+            set;
+        }
+        public DbSet<PropertyType> HotelType
+        {
+            get;
+            set;
+        }
+        public DbSet<Currency> HotelCurrency
         {
             get;
             set;
@@ -317,6 +329,33 @@ namespace HotelBooking.Context
             get;
             set;
         }
+        public DbSet<HallServices> HallServices
+        {
+            get;
+            set;
+        }
+        public DbSet<HallServiceCategory> HallServiceCategory
+        {
+            get;
+            set;
+        }
+
+        public DbSet<MessageAPIConfig> MessageAPIConfig
+        {
+            get;
+            set;
+        }
+        public DbSet<MessageTemplate> MessageTemplate
+        {
+            get;
+            set;
+        }
+        public DbSet<Messages> Messages
+        {
+            get;
+            set;
+        }
+
 
     }
 }

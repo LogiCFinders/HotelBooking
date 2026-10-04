@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Runtime;
 using System.Linq;
+using HotelBooking.Controllers.MessageApi;
 
 namespace HotelBooking.Controllers
 {
@@ -33,7 +34,10 @@ namespace HotelBooking.Controllers
 
            LoginController ll= new LoginController();
            LoginResponse urm= ll.ValidateLogin(lm);
-           
+
+
+
+               
             
             if (urm.UserId <= 0)
             {

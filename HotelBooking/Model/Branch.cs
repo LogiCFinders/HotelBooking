@@ -81,6 +81,8 @@ namespace HotelBooking.Model
         public string TaxNo1 { get; set; }
         public string TaxNo2 { get; set; }
         public int TimeZone { get; set; }
+        public string HotelType { get; set; }
+        public string  HotelCurrency { get; set; }
     }
 
     [Table("HotelContacts")]

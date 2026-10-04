@@ -45,7 +45,7 @@
                                         {
                                             if (item.Text != null)
                                             {
-                                                <option value="@item.Value" selected="@item.Selected"   >
+                                                <option value="@item.Value" selected="@item.Selected">
                                                     @item.Text
                                                 </option>
 
@@ -57,6 +57,8 @@
                                 @Html.HiddenFor(model => model.country)
                                 @Html.HiddenFor(model => model.isActive)
                                 @Html.HiddenFor(model => model.GuestId)
+                                @Html.HiddenFor(model => model.isVIP)
+                                @Html.HiddenFor(model => model.isBlackListed)
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Email</label>
@@ -65,10 +67,30 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Phone Number</label>
-                                
 
-                                        @Html.TextBoxFor(m => m.Phone, new { @class = "checkoutinput full-width ValidateInput", placeholder = "Guest Phone Number", valType="Phone", maxlength = "15" })
-                                    
+
+                                @Html.TextBoxFor(m => m.Phone, new { @class = "checkoutinput full-width ValidateInput", placeholder = "Guest Phone Number", valType = "Phone", maxlength = "15" })
+
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">&nbsp;</label>
+
+                                <ul class="unstyled">
+                                    <li>
+                                        <input class="styled-checkbox" id="CHK_ACTIVE_VIP" type="checkbox" checked="@Model.isVIP" name="CHK_ACTIVE_VIP">
+                                        <label for="CHK_ACTIVE_VIP">VIP</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">&nbsp;</label>
+
+                                <ul class="unstyled">
+                                    <li>
+                                        <input class="styled-checkbox" id="CHK_ACTIVE_BL" type="checkbox" checked="@Model.isBlackListed" name="CHK_ACTIVE_BL">
+                                        <label for="CHK_ACTIVE_BL">Black Listed</label>
+                                    </li>
+                                </ul>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -103,6 +125,14 @@
 
                 if (this.name == "CHK_ACTIVE") {
                     $('#isActive').val(this.checked);
+
+                }
+                if (this.name == "CHK_ACTIVE_VIP") {
+                    $('#isVIP').val(this.checked);
+
+                }
+                if (this.name == "CHK_ACTIVE_BL") {
+                    $('#isBlackListed').val(this.checked);
 
                 }
             });

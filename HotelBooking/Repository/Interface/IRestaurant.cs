@@ -32,5 +32,8 @@ namespace HotelBooking.Repository.Interface
         IEnumerable<restaurantBuffetMenu> GetAllBuffetMenu(int BranchId);
         restaurantBuffetMenu GetBuffetMenu(int RestaurantMenuId);
         IEnumerable<BuffetMenuDetails> GetBuffetMenuDetaiks(int buffeyMenuId);
+        IEnumerable<KOTList> GetKOTList(int RetaurantId);
+        IEnumerable<BillingMaster> getMyOrderss(int RetaurantId,int OrderById);
+        bool SetOrderStatus(SedtOrderStatusRequest sor);
     }
 }

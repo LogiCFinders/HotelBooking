@@ -23,8 +23,8 @@ namespace HotelBooking.Repository.Implementation
             {
                 // Set up SMTP client
                 SmtpClient client = new SmtpClient();
-                client.Host = "relay-hosting.secureserver.net";
-                client.Port = 25;
+                client.Host = "smtpout.secureserver.net";
+                client.Port = 465;
                 client.EnableSsl = false;
                 client.UseDefaultCredentials = false;
                 //client.Credentials = new NetworkCredential("sanjay_gope@hotmail.com", "Plmnbvcxzaq@12345");

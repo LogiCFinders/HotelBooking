@@ -1,0 +1,22 @@
+﻿@model HotelBooking.Model.Hall.HallServices
+@{
+    ViewBag.Title = "ViewHallServices";
+}
+
+<table cellpadding="0" cellspacing="0">
+    @if (Model!=null)
+    {
+        
+            <tr>
+                <td>
+                    <u>
+                        @Model.Title
+                    </u>
+                    <hr />
+                    <video id="VideoPlayer" src='@Url.Action("DownloadVDOFile", "Home", new {HallServiceId = Model.ServiceId})' controls="true"
+                           width="400" height="350" loop="true" />
+                </td>
+            </tr>
+       
+    }
+</table>

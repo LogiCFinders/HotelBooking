@@ -23,6 +23,11 @@ namespace HotelBooking.Repository.Interface
         bool SaveHallBookingPayment(HallBookingPayment hallPaymentEntity);
 
         IEnumerable<HallBooking> CheckHallAvailability(int HallId,DateTime bookingDate,int slotId);
+        IEnumerable<HallServices> GetHallServices(int BranchId);
+        bool SaveHallService(HallServices hallServiceEntity);
+        HallServices GetHallService(int HallServiceId);
+        IEnumerable<HallServiceCategory> GetHallServicesCategory(int BranchId);
+
 
     }
 }

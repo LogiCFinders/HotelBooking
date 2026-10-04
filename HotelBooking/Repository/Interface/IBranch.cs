@@ -10,6 +10,8 @@ namespace HotelBooking.Repository.Interface
         IEnumerable<Branch> GetBranch();
         IEnumerable<Branch> GetBranchByCompanyId(int CompanyId);
         Branch GetBranchById(int BrnachId);
+        IEnumerable<PropertyType> GetHotelTypes();
+        IEnumerable<Currency> GetCurrency();
         int AddBranch(Branch BranchEntity);
         int UpdateBranch(Branch BranchEntity);
         void DeleteBranch(int BrnachId);

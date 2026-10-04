@@ -27,6 +27,7 @@ namespace HotelBooking.Model.Reatraurant
         public DateTime ClosingTime { get; set; }
         public int Tableid { get; set; }
         public bool isRoomService { get; set;}
+        public int OrderedBy { get; set; }
         [NotMapped]
         public IEnumerable<BillingDetails> BillingDetails { get; set; }
 
@@ -45,7 +46,8 @@ namespace HotelBooking.Model.Reatraurant
         public double Amount { get; set; }
         public double Tax { get; set; }
         public double TaxAmount { get; set; }
+        public string OrderStatus { get; set; }
 
-        
+
     }
 }

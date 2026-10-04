@@ -144,6 +144,47 @@
 
                                                             </div>
                                                         </div>
+
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Property Types </label>
+                                                                <select name="SelHotelType" id="SelHotelType" class="full-width freetrial GIValidateInput" valType="DropDown">
+                                                                    @if (ViewBag.HotelTypesComboModel != null)
+                                                                    {
+                                                                        foreach (var item in ViewBag.HotelTypesComboModel)
+                                                                        {
+                                                                            if (item.Text != null)
+                                                                            {
+                                                                                <option value="@item.Value" selected="@item.Selected">
+                                                                                    @item.Text
+                                                                                </option>
+
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </select>
+
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Currency</label>
+                                                                <select name="SelHotelCurr" id="SelHotelCurr" class="full-width freetrial GIValidateInput" valType="DropDown">
+                                                                    @if (ViewBag.HotelCurrComboModel != null)
+                                                                    {
+                                                                        foreach (var item in ViewBag.HotelCurrComboModel)
+                                                                        {
+                                                                            if (item.Text != null)
+                                                                            {
+                                                                                <option value="@item.Value" selected="@item.Selected">
+                                                                                    @item.Text
+                                                                                </option>
+
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                         
                                                     </div>
                                                     <div class="row">
@@ -670,6 +711,8 @@
             const bNoofFloors = $("#GeneralInformation_NoofFloors").val();
 
             const tz = $("#SelTZ option:selected").val();
+            const ht = $("#SelHotelType option:selected").val();
+            const hc = $("#SelHotelCurr option:selected").val();
 
 
             var ginfo = {
@@ -690,7 +733,9 @@
                 CheckInTime: bCheckInTime,
                 CheckOutTime: bCheckOutTime,
                 NoofFloors: bNoofFloors,
-                TimeZone: tz
+                TimeZone: tz,
+                HotelType: ht,
+                HotelCurrency:hc 
             }
             //console.log("Gen Info" + JSON.stringify(ginfo));
             fetch('/Home/updateGenInfo', {

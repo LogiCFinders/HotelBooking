@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Print Hall Booking";
 }
-
+<link href="~/css/HallBooking.css" rel="stylesheet" />
 <div class="row" id="PrintHallBooking">
     <div class="col-sm-12">
         <div class="card widget-container" id="BookingFirstPage">
@@ -106,60 +106,187 @@
 
                             </thead>
                             <tbody>
+                                
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="row">
+               
+
+
+
+                    <div class="card widget-container" id="step3" style="display:block">
+
+
+                        <h3 style=" font-size: 12px; font-weight: 600; color: #003556; text-align: center; padding: 15px 0px 0px 15px;"> Theme & Decoration</h3>
+
+                        <div class="row">
+
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                                <table class="table table-bordered" id="tblTheme">
+                                    <thead>
+                                        <tr>
+                                            <th bgcolor="#003556" colspan="2" style="align-items: center" class="clrwhit">Selected Theme</th>
+
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        @if (ViewBag.Decoration != null)
+                                        {
+                                            foreach (var dcr in ViewBag.Decoration)
+                                            {
+                                                var txAmt = dcr.COST * dcr.Tax / 100;
+                                                var totalCost = dcr.COST + dcr.TaxAmount;
+                                                var trselectedVal = dcr.isSelected ? "YES" : "";
+
+                                                <tr id="@dcr.ServiceId" Name="@dcr.Title" Cost="@dcr.COST" Tax="@dcr.Tax"  ThemeSelected="@trselectedVal" TaxAmount="@txAmt">
+
+                                                    <td>@dcr.Title</td>
+                                                    <td>@totalCost</td>
+                                                    
+
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+
+
+
+
+
+                    </div>
+
+
+                
+               
 
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
-                        <table class="table table-bordered" id="tblPS">
+                        <table class="table table-bordered" id="tblStalls">
                             <thead>
                                 <tr>
-                                    <th bgcolor="#003556" align="center" style="color:#FFFFFF" colspan="4">Services</th>
-                                </tr>
-                                <tr>
-                                    <th bgcolor="#003556" width="5%" class="clrwhit">#</th>
-                                    <th bgcolor="#003556" width="30%" class="clrwhit">Service Name</th>
-                                    <th bgcolor="#003556" width="30%" class="clrwhit">Cost </th>
-
+                                    <th bgcolor="#003556" style="align-items: center" class="clrwhit">Selected Stalls</th>
 
                                 </tr>
 
                             </thead>
                             <tbody>
-                                @foreach (var svc in Model.HallBookingCosting.Where(s => s.Status == "SVC"))
+                                @if (ViewBag.Stall != null)
                                 {
                                     <tr>
-                                        <td width="5%" >#</td>
-                                        <td  width="30%" >@svc.Description</td>
-                                        <td  width="30%" ><input type="text" id="txtCost" value="@svc.COST" readonly="readonly" style="text-align:right !important" class="full-width" placeholder="Cost" maxlength="15" runat="server"> </td>
+                                        <td>
+                                            <div class="cont-main">
+                                                @foreach (var dcr in ViewBag.Stall)
+                                                {
+                                                    var chkId = "myCheckbox-" + dcr.ServiceId;
+                                                    String img6412 = Convert.ToBase64String(dcr.StreamData);
+                                                    String img64Url12 = string.Format("data:image/jpeg;base64,{0}", img6412); //imagetype can be e.g. gif, jpeg, png etc.
+                                                    var txAmt = dcr.COST * dcr.Tax / 100;
+                                                    var totalCost = dcr.COST + dcr.TaxAmount;
 
 
+                                                    <div class="cont-checkbox">
+                                                        <input title="test" style="visibility:hidden" type="checkbox" id="@chkId" svcId="@dcr.ServiceId" Name="@dcr.Title" Cost="@dcr.COST" Tax="@dcr.Tax" TaxAmount="@txAmt" checked="@dcr.isSelected" />
+                                                        <label for="@chkId">
+
+                                                            <img src="@img64Url12" style="width:15%;height:15%" alt="" />
+
+                                                            <div class="info">@dcr.Title</div>
+                                                        </label>
+                                                    </div>
+
+
+
+                                                }
+                                            </div>
+                                        </td>
                                     </tr>
                                 }
                             </tbody>
+                            <tfoot>
 
+                            </tfoot>
                         </table>
 
                     </div>
 
-                </div>
-                <div class="row">
+              
+
+               
+
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                        <table class="table table-bordered" id="tblVehicle">
+                            <thead>
+                                <tr>
+                                    <th bgcolor="#003556" style="align-items: center" class="clrwhit">Selected Vehicle</th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Trans != null)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="cont-main">
+                                                @foreach (var dcr in ViewBag.Trans)
+                                                {
+                                                    var chkId = "myCheckbox-" + dcr.ServiceId;
+                                                    String img6412 = Convert.ToBase64String(dcr.StreamData);
+                                                    String img64Url12 = string.Format("data:image/jpeg;base64,{0}", img6412); //imagetype can be e.g. gif, jpeg, png etc.
+                                                    var txAmt = dcr.COST * dcr.Tax / 100;
+                                                    var totalCost = dcr.COST + dcr.TaxAmount;
+
+
+                                                    <div class="cont-checkbox">
+                                                        <input title="test" type="checkbox" style="visibility:hidden" id="@chkId" svcId="@dcr.ServiceId" Name="@dcr.Title" Cost="@dcr.COST" Tax="@dcr.Tax" TaxAmount="@txAmt" checked="@dcr.isSelected" />
+                                                        <label for="@chkId">
+
+                                                            <img src="@img64Url12" style="width:15%;height:15%" alt="" />
+
+                                                            <div class="info">@dcr.Title</div>
+                                                        </label>
+                                                    </div>
+
+
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+
+                    </div>
+
+                
+                
 
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
                         <table class="table table-bordered" id="tblCosting">
                             <thead>
                                 <tr>
-                                    <th bgcolor="#003556" style="color:#FFFFFF" align="center" colspan="3">Costing</th>
+                                    <th bgcolor="#003556" class="full-width" style="color:#FFFFFF" align="center" colspan="3">Costing</th>
+                                   
+
                                 </tr>
                                 <tr>
+
                                     <th bgcolor="#003556" class="clrwhit">#</th>
                                     <th bgcolor="#003556" class="clrwhit">Description</th>
-                                    <th bgcolor="#003556" class="clrwhit">Amount </th>
+                                    <th bgcolor="#003556" align="right" class="clrwhit">Amount </th>
 
                                 </tr>
-
                             </thead>
                             <tbody>
 
@@ -176,49 +303,38 @@
                                 </tr>
                                 <tr>
                                     <td>#</td>
-                                    <td align="left">Addition Service</td>
-                                    <td align="right"><span id="fsvsostingId">0.00</span></td>
+                                    <td align="left">Theme & Decoration</td>
+                                    <td align="right"><span id="themeCostingId">0.00</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#</td>
+                                    <td align="left">Additional Stalls</td>
+                                    <td align="right"><span id="stallCostingId">0.00</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#</td>
+                                    <td align="left">Transport &; Vehicle</td>
+                                    <td align="right"><span id="vehicleCostingId">0.00</span></td>
                                 </tr>
                                 <tr>
 
                                     <td align="right" colspan="2">Total Cost</td>
                                     <td align="right"><span id="totalCostId"></span></td>
                                 </tr>
-
-
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
-                        <table class="table table-bordered" id="tblPayment">
-                            <thead>
                                 <tr>
-                                    <th bgcolor="#003556" align="center" style="color:#FFFFFF" colspan="5">Payment</th>
+                                    <td bgcolor="#003556" align="center" style="color:#FFFFFF" colspan="3">Payment</td>
                                 </tr>
                                 <tr>
-                                    <th bgcolor="#003556" class="clrwhit">#</th>
-                                    <th bgcolor="#003556" class="clrwhit">Date</th>
-                                    <th bgcolor="#003556" class="clrwhit">Description</th>
-                                    <th bgcolor="#003556" class="clrwhit">Amount </th>
 
+                                    <td bgcolor="#003556" class="clrwhit">Payment Date</td>
+                                    <td bgcolor="#003556" class="clrwhit">Description</td>
+                                    <td bgcolor="#003556" align="right" class="clrwhit">Amount </td>
 
                                 </tr>
-
-                            </thead>
-                            <tbody>
-
                                 @foreach (var pmt in Model.HallBookingPayment)
                                 {
                                     <tr id="@pmt.HallBookingPaymentId">
-                                        <td>#</td>
+
                                         <td align="left">@pmt.paymentDate</td>
                                         <td align="left"><input type="text" id="txtPmtDesc" class="full-width" placeholder="Description" maxlength="15" readonly="readonly" value="@pmt.Description" runat="server"></td>
                                         <td align="right"><input type="text" id="txtPmtAmt" class="full-width" style="text-align:right !important" readonly="readonly" placeholder="Amount" maxlength="15" value="@pmt.Amount" runat="server"></td>
@@ -226,23 +342,14 @@
 
                                     </tr>
                                 }
-
                             </tbody>
-                            <tfoot>
-                                <tr>
-
-
-                                    <td colspan="3" align="right">Balance Amount</td>
-                                    <td align="right"><span id="totBalId"></span></td>
-
-
-                                </tr>
-                            </tfoot>
                         </table>
 
                     </div>
 
-                </div>
+               
+
+                
 
                 <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-right form-group">
                     <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -288,14 +395,9 @@
 
 
 
+        getBuffetMenuDetails(ArrMId[0]);
 
 
-        $("#SelBM").change(function () {
-            var ArrselectedValue = $(this).val().split("-");
-            selectedValue = ArrselectedValue[0];
-            getBuffetMenuDetails(selectedValue);
-        });
-        $("#SelBM").trigger('change');
 
         $("#HallBookingDate").datepicker({
             dateFormat: "mm-dd-yy",
@@ -304,7 +406,8 @@
             disabledDates: [new Date()],
 
         });
-
+        AddStalltoCosting();
+        AddVehicletoCosting();
 
     });
     function getBuffetMenuDetails(menuId) {
@@ -320,26 +423,26 @@
                 //console.log("test"+GLBuffetMenuDetails);
                 GLBuffetMenuDetails.forEach((itm, itmIndex) => {
 
-                    trItems += ' <tr><th width = "20%" align = "left" BuffetMenuId="' + itm.BuffetMenuId + '" id="' + itm.CategoryId + '" opt="' + itm.MenuOption + '" valign = "middle" bgcolor = "#003556" class="clrwhit" > <a href="#">' + itm.BuffetMenuCategory + ' - Any (' + itm.MenuOption + ')' + '</a></th>';
-                    trItems += '<td><ul>';
+                    trItems += ' <tr>    ';
+                    trItems += '<td style="padding:10px 15px !important"><ul class="menulist"> <h3>' + itm.BuffetMenuCategory + ' </h3>';
                     var itemIds = "'";
                     var headingIds;
-
                     itm.ItemDetails.forEach((itm1, itmIndex) => {
                         itemIds = itemIds + itm1.ItemId + "-";
                         headingIds = itm1.HeadingId;
+                        var chkid = 'CHK_' + itm1.ItemId;
                         var isSelected = '';
                         var isfound = isAlreadySelected(itm1.ItemId);
                         if (isfound) {
-                            trItems += '<li align="left" bfmItemid="' + itm1.BuffetMenuItemId + '" bfmid="' + itm1.BuffetMenuId + '" id="' + itm1.ItemId + '" hId="' + itm1.HeadingId + '" valign="middle">' + itm1.ItemName + '</li>';
+                            isSelected = "checked=checked";
                         }
-                        //console.log("Found " + isfound);
-                       
+                        trItems += '<li align="left"  valign="middle">';
+                        trItems += '<input type="checkbox" ' + isSelected + ' class="styled-checkbox"  bfmItemid="' + itm1.BuffetMenuItemId + '" bfmid="' + itm1.BuffetMenuId + '" id="' + chkid + '" hId="' + itm1.HeadingId + '" value="' + itm1.ItemName + '" name="' + itm.BuffetMenuId + '" onclick="checkSelection(this,' + itm.MenuOption + ');" /><label for="' + chkid + '">' + itm1.ItemName + '</label></li>';
 
                     });
                     itemIds = itemIds + "'"
                     trItems += '</ul></td>';
-                   // trItems += '<td align="left" id="XXX" valign="middle" class="text-right"><a href="#" onclick="EditCategory(' + itm.MenuOption + ',' + itm.CategoryId + ',' + headingIds + ',' + itemIds + ');" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>';
+                    //trItems += '<td align="left" id="XXX" valign="middle" class="text-right"><a href="#" onclick="EditCategory(' + itm.MenuOption + ',' + itm.CategoryId + ',' + headingIds + ',' + itemIds + ');" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>';
                     trItems += '</tr>';
                 });
                 $("#tblBFM tbody").empty();
@@ -351,7 +454,7 @@
 
                  console.log('A error');
                 }
-                });
+        });
 
     }
     function checkSelection(n, opt) {
@@ -370,32 +473,29 @@
     }
     function isAlreadySelected(itemId) {
         var itemsId = [];
-        var rtnVal = false;
-        //console.log(itemId);
-        var Arr = '@Model.HallBookingDetails';
+var rtnVal = false;
+//console.log(itemId);
 
-        var ArrItems = Arr.split('$');
-        //console.log(ArrItems);
-        ArrItems.forEach((itm, itmIndex) => {
-            var itmArr = itm.split('#');
-            //console.log(itmArr);
-            var fItems = itmArr[1].split(',');
-            fItems.forEach((itm1, itmIndex) => {
-                itemsId.push(Number(itm1));
+var ArrItems1='@Model.HallBookingDetails';
+var ArrItems = ArrItems1.split(',');
+//console.log(ArrItems);
+ArrItems.forEach((itm, itmIndex) => {
 
-            });
-        });
-        //console.log(itemsId);
-        var index = $.inArray(itemId, itemsId);
+    itemsId.push(Number(itm.substring(4)));
 
-        if (index !== -1) {
-            //console.log("Value found at index: " + index);
-            rtnVal = true;
-        } else {
-            //console.log("Value not found in the array.");
-            rtnVal = false;
-        }
-        return rtnVal;
+
+});
+//console.log(itemsId);
+var index = $.inArray(itemId, itemsId);
+
+if (index !== -1) {
+    //console.log("Value found at index: " + index);
+    rtnVal = true;
+} else {
+    //console.log("Value not found in the array.");
+    rtnVal = false;
+}
+return rtnVal;
 
     }
     function SaveHallBooking() {
@@ -694,37 +794,61 @@
     }
     function AddPStoCosting() {
         var totalServiceCost = 0;// Number($("#fsvsostingId").text());
-        //console.log("totalServiceCost..." + totalServiceCost);
+        console.log("totalServiceCost..." + totalServiceCost);
         $("#fsvsostingId").text('');
-        $("#tblPS tbody > tr").each(function (idx) {
+        $("#tblTheme tbody > tr").each(function (idx) {
+            var sel = $(this).attr("themeselected");
+            console.log(sel);
+            if (sel == "YES") {
+                var itemCost = $(this).attr("COST");
 
-            var itemCost = 0;
+                totalServiceCost += Number(itemCost);
+            }
 
-            $(this).find('td').each(function (index) {
+        });
+        //console.log("cost  :" + Number(totalServiceCost).toFixed(2));
+        $("#themeCostingId").text(Number(totalServiceCost).toFixed(2));
+        $("#fdCostingId").trigger("change");
 
-                if (index == 2) {
-                   $(this).find("input").each(function () {
-                        itemCost = $(this).val();
-                        //console.log("Testing..." + itemCost);
-                        totalServiceCost += Number(itemCost);
+    }
+    function AddStalltoCosting() {
+        var totalServiceCost = 0;// Number($("#fsvsostingId").text());
+        console.log("totalServiceCost..." + totalServiceCost);
+        $("#stallCostingId").text('');
+        $("#tblStalls tbody > tr").each(function (idx) {
 
-                    });
+            if ($(this).find('input[type="checkbox"]').is(':checked')) {
+                var chk = $(this).find('input[type="checkbox"]');
 
-                }
+                var itemCost = $(chk).attr("COST");
+                totalServiceCost += Number(itemCost);
 
-
-            });
-
-
-
+            }
 
 
         });
         //console.log("cost  :" + Number(totalServiceCost).toFixed(2));
-        $("#fsvsostingId").text(Number(totalServiceCost).toFixed(2));
+        $("#stallCostingId").text(Number(totalServiceCost).toFixed(2));
         $("#fdCostingId").trigger("change");
 
+    }
+    function AddVehicletoCosting() {
+        var totalServiceCost = 0;// Number($("#fsvsostingId").text());
+        console.log("totalServiceCost..." + totalServiceCost);
+        $("#vehicleCostingId").text('');
+        $("#tblVehicle tbody > tr").each(function (idx) {
+            if ($(this).find('input[type="checkbox"]').is(':checked')) {
+                var chk = $(this).find('input[type="checkbox"]');
 
+                var itemCost = $(chk).attr("COST");
+                totalServiceCost += Number(itemCost);
+
+            }
+
+        });
+        //console.log("cost  :" + Number(totalServiceCost).toFixed(2));
+        $("#vehicleCostingId").text(Number(totalServiceCost).toFixed(2));
+        $("#fdCostingId").trigger("change");
 
     }
     function AddPS() {
@@ -757,4 +881,19 @@
         $(tt).closest("tr").remove();
         CalCulateTotal();
     }
+    function PrintHallBooking(tt) {
+        var divToPrint = document.getElementById('PrintHallBooking');
+        var newWin = window.open('', 'Print-Window');
+        newWin.document.open();
+        newWin.document.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><link href="../css/HallBooking.css" rel="stylesheet" /></head><body onload="window.print();">');
+        newWin.document.write('<link rel="stylesheet" type="text/css" href="/css/prism.min.css">');
+        newWin.document.write('<link rel="stylesheet" type="text/css" href="/css/prism.min.css">');
+        newWin.document.write('<link rel="stylesheet" type="text/css" href="/css/style.min.css">');
+        newWin.document.write('<link rel="stylesheet" type="text/css" href="/css/app.css">');
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.document.write('</body></html>');
+        newWin.document.close();
+
+    }
+
 </script>

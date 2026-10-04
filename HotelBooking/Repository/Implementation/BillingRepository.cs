@@ -37,6 +37,7 @@ namespace HotelBooking.Repository.Implementation
                     BM.TotalAmount = billingMasterEntity.TotalAmount;
                     BM.TaxAmount = billingMasterEntity.TaxAmount;
                     BM.GrantTotal = billingMasterEntity.GrantTotal;
+                    BM.OrderedBy=billingMasterEntity.OrderedBy;
                      rtnVal = true;
                 }
                 else
@@ -64,6 +65,7 @@ namespace HotelBooking.Repository.Implementation
 
                 foreach (var item in billingMasterEntity.BillingDetails) {
                     item.BillingMasterId = MasterId;
+
                     rtnVal = insertUpdateBillingDetails(item);
                 }
 
@@ -93,6 +95,7 @@ namespace HotelBooking.Repository.Implementation
                     bd.Amount= billingDetailsEntity.Amount;
                     bd.ItemId= billingDetailsEntity.ItemId;
                     bd.ItemName= billingDetailsEntity.ItemName;
+                    bd.OrderStatus= billingDetailsEntity.OrderStatus;
                     
 
                     rtnVal = true;

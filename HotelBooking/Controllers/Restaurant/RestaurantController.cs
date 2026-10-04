@@ -151,5 +151,24 @@ namespace HotelBooking.Controllers.Restaurant
         {
             return _REST.GetBuffetMenuDetaiks(BuffetMenuId);
         }
+
+        [Route("api/restaurant/GetKOT/{RestaurantId}")]
+        [HttpGet]
+        public IEnumerable<KOTList> GetKOT(int RestaurantId)
+        {
+            return _REST.GetKOTList(RestaurantId);
+        }
+        [Route("api/restaurant/GetMyOrders/{RestaurantId}")]
+        [HttpGet]
+        public IEnumerable<BillingMaster> GetMyOrders(int RestaurantId, int OrderById)
+        {
+            return _REST.getMyOrderss(RestaurantId,OrderById);
+        }
+        [Route("api/restaurant/SetOrderStatus/{SOR}")]
+        [HttpGet]
+        public bool SetOrderStatus(SedtOrderStatusRequest sor)
+        {
+            return _REST.SetOrderStatus(sor);
+        }
     }
 }

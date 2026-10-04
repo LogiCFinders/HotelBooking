@@ -1,0 +1,106 @@
+﻿@model HotelBooking.Model.Hall.HallServices
+@{
+    ViewBag.Title = "EditHallServices";
+}
+
+<div class="row" id="AddHallservices" style="display: block;">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Edit Hall Services</div>
+            <div class="widget-content padded text-center">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive pull-left">
+                        @using (Html.BeginForm("SaveHallServices", "Home", FormMethod.Post, new { id = "msform", enctype = "multipart/form-data" }))
+                        {
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left">
+                                <label for="edit-mail" class="form-required">Title</label>
+
+                                @Html.TextBoxFor(m => m.Title, new { @class = "full-width ValidateInput", placeholder = "Title", maxlength = "100" })
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left">
+                                <label for="edit-mail" class="form-required">Short Discription</label>
+                                @Html.TextAreaFor(m => m.ShortDescription, new { @class = "full-width", maxlength = "500" })
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Discription</label>
+                                @Html.TextAreaFor(m => m.Description, new { @class = "full-width ValidateInput", maxlength = "500" })
+                            </div>
+
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Price</label>
+
+                                @Html.TextBoxFor(m => m.COST, new { @class = "full-width ValidateInput", placeholder = "Price", maxlength = "7", valType = "NumbersOnly" })
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left">
+                                <label for="edit-mail" class="form-required">Tax Percentage</label>
+
+                                @Html.TextBoxFor(m => m.Tax, new { @class = "full-width ValidateInput", placeholder = "Tax Percentage", maxlength = "5", valType = "NumbersOnly" })
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+
+                                <table cellpadding="0" cellspacing="0">
+                                    @if (Model != null)
+                                    {
+
+                                        <tr>
+                                            <td>
+                                                <u>
+                                                    @Model.Title
+                                                </u>
+                                                <hr />
+                                                <video id="VideoPlayer" src='@Url.Action("DownloadVDOFile", "Home", new {HallServiceId = Model.ServiceId})' controls="true"
+                                                       width="400" height="350" loop="true" autoplay="autoplay" />
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </table>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <table class="table table-bordered" style="width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td>Select Image</td>
+                                            <td>
+                                                <input type="file" id="RTImageData" name="RTImageData" accept="image/jpg,image/png,image/jpeg,image/gif,video/mp4" class=" full-width">
+
+                                                <p id="error1" style="display:none; color:#FF0000;">
+                                                    Invalid Image Format! Image Format Must Be JPG, JPEG, PNG ,GIF or Video(mp3/mp4).
+                                                </p>
+                                                <p id="error2" style="display:none; color:#FF0000;">
+                                                    Maximum File Size Limit is 1MB.
+                                                </p>
+
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+
+                                <ul class="unstyled">
+                                    <li>
+                                        <input class="styled-checkbox" id="styled-checkbox-2" name="CHK_ACTIVE" type="checkbox" checked="@Model.isActive">
+
+                                        <label for="styled-checkbox-2">Active</label>
+                                    </li>
+
+                                </ul>
+                                @Html.HiddenFor(m => m.isActive);
+                            </div>
+                            <input type="submit" name="SUBMIT" class="prev action-button" onclick="return addDatatoModel();" value="Save" runat="server">
+                            @*<input type="button" id="ajaxUpload" class="prev action-button" value="Ajax Upload" />*@
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

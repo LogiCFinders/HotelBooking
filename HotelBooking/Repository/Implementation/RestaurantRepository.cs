@@ -5,6 +5,7 @@ using HotelBooking.Repository.Interface;
 using Org.BouncyCastle.X509;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web;
@@ -15,10 +16,12 @@ namespace HotelBooking.Repository.Implementation
     public class RestaurantRepository : IRestaurant
     {
         private readonly CompanyContext _context;
+        private readonly StaffContext _contextStf;
 
         public RestaurantRepository()
         {
             _context = new CompanyContext();
+            _contextStf = new StaffContext();
 
         }
         public IEnumerable<RestaurantModel> GetAllRestaurant(int BranchId)
@@ -507,6 +510,71 @@ namespace HotelBooking.Repository.Implementation
                 b.ItemDetails=_context.BuffetMenuItem.Where(b1=>b1.BuffetMenuId==b.BuffetMenuId).ToArray();
             }
             return bmd;
+        }
+        public IEnumerable<KOTList> GetKOTList(int RetaurantId)
+        {
+            var billM = _context.BillingMaster.Where(b => b.RestaurantId == RetaurantId && b.isPark == true && b.isRoomService==false).ToArray();
+            List<KOTList> rtnVal= new List<KOTList>();
+            foreach(var b in billM)
+            {
+                KOTList itm = new KOTList();
+                itm.RestaurantId= b.RestaurantId;
+                itm.TableNumber= getTableName(b.Tableid);
+                itm.OrderedById = b.OrderedBy;
+                itm.orderedByName = getLoggedInName(b.OrderedBy);
+                itm.BillingId=b.BillingId;
+                var billd= _context.BillingDetails.Where(b1 => b1.BillingMasterId == b.BillingId).ToArray();
+                List<KOTListDetails> ktld = new List<KOTListDetails>();
+                foreach (var t in billd)
+                {
+                    KOTListDetails ktl = new KOTListDetails();
+                    ktl.ItemId=t.ItemId;
+                    ktl.ItemName = t.ItemName;
+                    ktl.OrderStatus = t.OrderStatus;
+                    ktld.Add(ktl);
+                }
+                itm.Items = ktld;
+                rtnVal.Add(itm);
+            }
+            return rtnVal;
+        }
+        public bool SetOrderStatus(SedtOrderStatusRequest sor)
+        {
+            bool rtnVal = false;
+           IEnumerable<BillingDetails> bd = _context.BillingDetails.Where(b => b.ItemId==sor.ItemId && b.BillingMasterId==sor.OrderId).ToArray();
+            if (bd != null) {
+                foreach (var b in bd)
+                {
+                    b.OrderStatus = sor.status;
+                    rtnVal = true;
+                }
+            }
+            _context.SaveChanges();
+
+            return rtnVal;
+        }
+        public IEnumerable<BillingMaster> getMyOrderss(int RetaurantId, int OrderById)
+        {
+            IEnumerable<BillingMaster> bmlist = _context.BillingMaster.Where(b => b.RestaurantId == RetaurantId && b.isPark == true && b.OrderedBy == OrderById).ToArray();
+            foreach (var b in bmlist)
+            {
+                IEnumerable<BillingDetails> blist = _context.BillingDetails.Where(b1 => b1.BillingMasterId == b.BillingId).ToArray();
+                b.BillingDetails = blist;
+            }
+            return bmlist;
+        }
+        private string getLoggedInName(int id)
+        {
+            string rtnVal = string.Empty;
+            rtnVal=_contextStf.Staff.Where(s => s.Id == id).Select(e => e.StaffName).SingleOrDefault();
+            return rtnVal;
+        }
+
+        private string getTableName(int tableid)
+        {
+            string rtnVal = string.Empty;
+            rtnVal = _context.RestaurantTables.Where(s => s.TableId == tableid).Select(e => e.Name).SingleOrDefault();
+            return rtnVal;
         }
     }
 }

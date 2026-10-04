@@ -23,5 +23,6 @@ namespace HotelBooking.Model.EditHotel
         public List<VM_ContactDetails> ContactInformation { get; set; }
         public VM_WebConfiguration WebSiteConfiguration { get; set; }
         public List<VM_HotelImages> HotelImages { get; set; }
+
     }
 }

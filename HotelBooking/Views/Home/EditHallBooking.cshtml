@@ -2,107 +2,149 @@
 @{
     ViewBag.Title = "Edit Hall Booking";
 }
+
 @{
     var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
     var BFMItems = jss.Serialize(Model.HallBookingDetails);
+    var themselected = false;
 }
+
+<link href="~/css/HallBooking.css" rel="stylesheet" />
 <div class="row" id="EditBooking">
     <div class="col-sm-12">
-        <div class="card widget-container" id="BookingFirstPage">
+
+        <div class="card widget-container" id="step1">
             <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
 
 
-                <h3 style=" font-size: 18px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Party Hall  Reservation</h3>
+                <h3 style=" font-size: 20px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Party Hall  Reservation</h3>
+                <h3 style=" font-size: 16px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Step - 1 : Customer Details</h3>
 
-
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Customer Name</label>
-                    <input type="text" id="txtCustomerName" class="full-width" value="@Model.CustomerName" placeholder="Customer Name " maxlength="100" runat="server">
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Customer Email</label>
-                    <input type="text" id="txtCustomerEmail" class="full-width" value="@Model.CustomerEmail" placeholder="Customer Email" maxlength="150" runat="server">
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Customer Phone</label>
-                    <input type="text" id="txtCustomerPhone" class="full-width" value="@Model.CustomerPhone" placeholder="Customer Phone Number" maxlength="15" runat="server">
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Number of Person</label>
-                    <input type="text" id="txtNPax" class="full-width" value="@Model.Number_Of_Person" placeholder="Number of Person" maxlength="15" runat="server">
-                </div>
-
-
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Select a Hall</label>
-                    <select name="SelHall" id="SelHall" class="full-width freetrial">
-                        @if (ViewBag.PartyHall != null)
-                        {
-                            foreach (var item in ViewBag.PartyHall)
-                            {
-                                if (item.Text != null)
-                                {
-                                    <option value="@item.Value" selected="@item.Selected">
-                                        @item.Text.Trim()
-                                    </option>
-
-                                }
-                            }
-                        }
-                    </select>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Select a Slot</label>
-                    <select name="SelSlot" id="SelSlot" class="full-width freetrial">
-                        @if (ViewBag.Slots != null)
-                        {
-                            foreach (var item in ViewBag.Slots)
-                            {
-                                if (item.Text != null)
-                                {
-                                    <option value="@item.Value" selected="@item.Selected">
-                                        @item.Text.Trim()
-                                    </option>
-
-                                }
-                            }
-                        }
-                    </select>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Select a Menu</label>
-                    <select name="SelBM" id="SelBM" class="full-width freetrial">
-                        @if (ViewBag.BuffetMenus != null)
-                        {
-                            foreach (var item in ViewBag.BuffetMenus)
-                            {
-                                if (item.Text != null)
-                                {
-                                    <option value="@item.Value" selected="@item.Selected">
-                                        @item.Text.Trim()
-                                    </option>
-
-                                }
-                            }
-                        }
-                    </select>
-                </div>
-
-
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p-0 pull-left">
+                <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
-                        <label for="edit-mail" class="form-required">Hall/Party on</label>
-                        <input type="text" id="HallBookingDate" value="@Model.BookingDate" class="full-width allinputgo  ValidateInput" placeholder="Hall Booking Date" autocomplete="off">
+                        <label for="edit-mail" class="form-required">Customer Name</label>
+                        <input type="text" id="txtCustomerName" class="full-width" value="@Model.CustomerName" placeholder="Customer Name " maxlength="100" runat="server">
                     </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Customer Email</label>
+                        <input type="text" id="txtCustomerEmail" class="full-width" value="@Model.CustomerEmail" placeholder="Customer Email" maxlength="150" runat="server">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Customer Phone</label>
+                        <input type="text" id="txtCustomerPhone" class="full-width" value="@Model.CustomerPhone" placeholder="Customer Phone Number" maxlength="15" runat="server">
+                    </div>
+                    <div class="col-lg-6 col-md-6  col-sm-6 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Number of Person</label>
+                        <input type="text" id="txtNPax" class="full-width" value="@Model.Number_Of_Person" placeholder="Number of Person" maxlength="15" runat="server">
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 pull-right form-group">
+                    <label for="edit-mail" class="form-required">&nbsp;</label>
+
+                    <input type="button" id="Step1Next" name="NEXT" class="prev action-button" value="Next" runat="server">
+                </div>
+
+            </form>
+        </div>
+        <div class="card widget-container" id="step2" style="display:none">
+            <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+
+
+                <h3 style=" font-size: 20px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Party Hall  Reservation</h3>
+                <h3 style=" font-size: 16px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Step - 2 : Hall & Food</h3>
+
+
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 p-0 pull-left">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <label for="edit-mail" class="form-required">Hall/Party on</label>
+                            <input type="text" id="HallBookingDate" value="@Model.BookingDate" class="full-width allinputgo  ValidateInput" placeholder="Hall Booking Date" autocomplete="off">
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Select a Hall</label>
+                        <select name="SelHall" id="SelHall" class="full-width freetrial">
+                            @if (ViewBag.PartyHall != null)
+                            {
+                                foreach (var item in ViewBag.PartyHall)
+                                {
+                                    if (item.Text != null)
+                                    {
+                                        <option value="@item.Value" selected="@item.Selected">
+                                            @item.Text.Trim()
+                                        </option>
+
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Select a Slot</label>
+                        <select name="SelSlot" id="SelSlot" class="full-width freetrial">
+                            @if (ViewBag.Slots != null)
+                            {
+                                foreach (var item in ViewBag.Slots)
+                                {
+                                    if (item.Text != null)
+                                    {
+                                        <option value="@item.Value" selected="@item.Selected">
+                                            @item.Text.Trim()
+                                        </option>
+
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Select a Menu</label>
+                        <select name="SelBM" id="SelBM" class="full-width freetrial">
+                            @if (ViewBag.BuffetMenus != null)
+                            {
+                                foreach (var item in ViewBag.BuffetMenus)
+                                {
+                                    if (item.Text != null)
+                                    {
+                                        <option value="@item.Value" selected="@item.Selected">
+                                            @item.Text.Trim()
+                                        </option>
+
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+
+
 
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
-                        <table class="table table-bordered" id="tblBFM">
+                        <table class="table table-bordered" id="tblAvailibility" style="display:none !important">
                             <thead>
                                 <tr>
-                                    <th bgcolor="#003556" class="clrwhit">Category</th>
-                                    <th bgcolor="#003556" class="clrwhit">Items</th>
+                                    <th bgcolor="#003556" class="clrwhit">Date</th>
+                                    <th bgcolor="#003556" class="clrwhit">Customer Name</th>
+                                    <th bgcolor="#003556" class="clrwhit">Slot </th>
+                                    <th bgcolor="#003556" class="clrwhit">Status </th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered" id="tblBFM" style="display:block !important">
+                            <thead>
+                                <tr>
+                                    <th bgcolor="#003556" class="clrwhit">Item Selection</th>
+
 
                                 </tr>
 
@@ -111,54 +153,264 @@
                             </tbody>
                         </table>
                     </div>
+
                 </div>
+
+
+
+
+
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 pull-right form-group">
+                    <label for="edit-mail" class="form-required">&nbsp;</label>
+                    <input type="button" name="SUBMIT" id="btnStep2Prev" class="prev action-button " value="Previous" runat="server">
+                    <input type="button" name="SUBMIT" id="btnStep2Next" class="prev action-button" value="Next" runat="server">
+                </div>
+
+            </form>
+        </div>
+
+        <div class="card widget-container" id="step3" style="display:none">
+            <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+
+                <h3 style=" font-size: 20px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Party Hall  Reservation</h3>
+                <h3 style=" font-size: 16px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Step - 3 : Theme & Decoration</h3>
+
                 <div class="row">
 
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
-                        <table class="table table-bordered" id="tblPS">
+                        <table class="table table-bordered" id="tblTheme">
                             <thead>
                                 <tr>
-                                    <th bgcolor="#003556" align="center" style="color:#FFFFFF" colspan="4">Services</th>
-                                </tr>
-                                <tr>
-                                    <th bgcolor="#003556" width="5%" class="clrwhit">#</th>
-                                    <th bgcolor="#003556" width="30%" class="clrwhit">Service Name</th>
-                                    <th bgcolor="#003556" width="30%" class="clrwhit">Cost </th>
-                                    <th bgcolor="#003556" width="35%" class="clrwhit"><input type="button" name="btnAddPs" class="prev action-button full-width mg-0 " onclick="AddPS();" value="Add" runat="server"> </th>
+                                    <th bgcolor="#003556" colspan="3" style="align-items: center" class="clrwhit">Select any one Theme</th>
 
                                 </tr>
 
                             </thead>
                             <tbody>
-                                @foreach (var svc in Model.HallBookingCosting.Where(s => s.Status == "SVC"))
+                                @if (ViewBag.Decoration != null)
                                 {
-                                    <tr>
-                                        <td bgcolor="#003556" width="5%" class="clrwhit">#</td>
-                                        <td bgcolor="#003556" width="30%" class="clrwhit">@svc.Description</td>
-                                        <td bgcolor="#003556" width="30%" class="clrwhit"><input type="text" id="txtCost" value="@svc.COST" style="text-align:right !important" class="full-width" placeholder="Cost" maxlength="15" runat="server"> </td>
-                                        <td bgcolor="#003556" width="35%" class="clrwhit"><input type="button" name="btnRemoveRow" class="prev action-button full-width mg-0 " onclick="RemovePS(this);" value="Remove" runat="server"></td>
+                                    foreach (var dcr in ViewBag.Decoration)
+                                    {
+                                        var txAmt = dcr.COST * dcr.Tax / 100;
+                                        var totalCost = dcr.COST + dcr.TaxAmount;
+                                        if (dcr.isSelected) { themselected = true; }
+                                        var trselected = dcr.isSelected ? "Class=highlighted" : "";
+                                        var trselectedVal = dcr.isSelected ? "YES" : "";
+                                        <tr @trselected id="@dcr.ServiceId" Name="@dcr.Title" Cost="@dcr.COST" Tax="@dcr.Tax" TaxAmount="@txAmt" ThemeSelected=@trselectedVal onclick="SelectTheme(this);">
 
-                                    </tr>
+                                            <td>@dcr.Title</td>
+                                            <td>@totalCost</td>
+                                            <td style="align-items: center">
+                                                @if (dcr.ContentType == "image/jpeg")
+                                                {
+
+                                                    String img6412 = Convert.ToBase64String(dcr.StreamData);
+                                                    String img64Url12 = string.Format("data:image/jpeg;base64,{0}", img6412); //imagetype can be e.g. gif, jpeg, png etc.
+
+                                                    <img style="width:50%;height:50%" src="@img64Url12" alt="">
+                                                }
+                                                else
+                                                {
+                                                    <video id="VideoPlayer" src='@Url.Action("DownloadVDOFile", "Home", new {HallServiceId = dcr.ServiceId})' controls="true"
+                                                           width="400" height="350" loop="true" />
+                                                }
+                                            </td>
+
+                                        </tr>
+                                    }
                                 }
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td bgcolor="#003556" width="35%" class="clrwhit"><input type="button" name="btnAddPsToCost" class="prev action-button full-width mg-0 " onclick="AddPStoCosting();" value="Add to cart" runat="server"> </td>
+                                    @if (themselected)
+                                    {
+
+
+                                        <td><input type="hidden" id="hdnSelectedTheme" value="YES" /></td>
+                                    }
+                                    else
+                                    {
+                                        <td><input type="hidden" id="hdnSelectedTheme" /></td>
+                                    }
+
+
+
                                 </tr>
+
                             </tfoot>
                         </table>
 
                     </div>
 
                 </div>
+
+
+
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 pull-right form-group">
+                    <label for="edit-mail" class="form-required">&nbsp;</label>
+                    <input type="button" name="SUBMIT" id="btnStep3Prev" class="prev action-button " value="Previous" runat="server">
+                    <input type="button" name="SUBMIT" id="btnStep3Skip" class="prev action-button " onclick="SkipStep3();" value="Skip" runat="server">
+                    <input type="button" name="SUBMIT" id="btnStep3Next" class="prev action-button" value="Next" runat="server">
+                </div>
+
+            </form>
+        </div>
+        <div class="card widget-container" id="step4" style="display:none">
+            <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+
+                <h3 style=" font-size: 20px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Party Hall  Reservation</h3>
+                <h3 style=" font-size: 16px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Step - 4 : Stall Selection</h3>
+
+                <div class="row">
+
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                        <table class="table table-bordered spcl" id="tblStalls">
+                            <thead>
+                                <tr>
+                                    <th bgcolor="#003556" style="align-items: center" class="clrwhit">Select Stalls</th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Stall != null)
+                                {
+                                    <tr>
+                                        <td style="align-items:flex-start;width:20px !important">
+                                            <div class="cont-main">
+
+                                                @foreach (var dcr in ViewBag.Stall)
+                                                {
+                                                    var chkId = "myCheckbox-" + dcr.ServiceId;
+                                                    String img6412 = Convert.ToBase64String(dcr.StreamData);
+                                                    String img64Url12 = string.Format("data:image/jpeg;base64,{0}", img6412); //imagetype can be e.g. gif, jpeg, png etc.
+                                                    var txAmt = dcr.COST * dcr.Tax / 100;
+                                                    var totalCost = dcr.COST + dcr.TaxAmount;
+                                                    <div class="cont-checkbox">
+                                                        <input title="test" type="checkbox" id="@chkId" svcId="@dcr.ServiceId" Name="@dcr.Title" Cost="@dcr.COST" Tax="@dcr.Tax" TaxAmount="@txAmt" checked="@dcr.isSelected" />
+                                                        <label for="@chkId">
+
+                                                            <img src="@img64Url12" />
+                                                            <span class="cover-checkbox">
+                                                                <svg viewBox="0 0 12 10">
+                                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                                </svg>
+                                                            </span>
+                                                            <div class="info">@dcr.Title</div>
+                                                        </label>
+                                                    </div>
+
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 pull-right form-group">
+                    <label for="edit-mail" class="form-required">&nbsp;</label>
+                    <input type="button" name="SUBMIT" id="btnStep4Prev" class="prev action-button " value="Previous" runat="server">
+                    <input type="button" name="SUBMIT" id="btnStep4Skip" class="prev action-button " onclick="SkipStep4();" value="Skip" runat="server">
+                    <input type="button" name="SUBMIT" id="btnStep4Next" class="prev action-button" value="Next" runat="server">
+                </div>
+            </form>
+        </div>
+
+        <div class="card widget-container" id="step5" style="display:none">
+            <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+
+                <h3 style=" font-size: 20px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Party Hall  Reservation</h3>
+                <h3 style=" font-size: 16px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Step - 5: Transpotation(Vehicle)</h3>
+
+
+                <div class="row">
+
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                        <table class="table table-bordered spcl" id="tblVehicle">
+                            <thead>
+                                <tr>
+                                    <th bgcolor="#003556" style="align-items: center" class="clrwhit">Select Vehicle</th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Trans != null)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="cont-main">
+                                                @foreach (var dcr in ViewBag.Trans)
+                                                {
+                                                    var chkId = "myCheckbox-" + dcr.ServiceId;
+                                                    String img6412 = Convert.ToBase64String(dcr.StreamData);
+                                                    String img64Url12 = string.Format("data:image/jpeg;base64,{0}", img6412); //imagetype can be e.g. gif, jpeg, png etc.
+                                                    var txAmt = dcr.COST * dcr.Tax / 100;
+                                                    var totalCost = dcr.COST + dcr.TaxAmount;
+
+
+                                                    <div class="cont-checkbox">
+                                                        <input title="test" type="checkbox" id="@chkId" svcId="@dcr.ServiceId" Name="@dcr.Title" Cost="@dcr.COST" Tax="@dcr.Tax" TaxAmount="@txAmt" checked="@dcr.isSelected" />
+                                                        <label for="@chkId">
+
+                                                            <img src="@img64Url12" />
+                                                            <span class="cover-checkbox">
+                                                                <svg viewBox="0 0 12 10">
+                                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                                </svg>
+                                                            </span>
+                                                            <div class="info">@dcr.Title</div>
+                                                        </label>
+                                                    </div>
+
+
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 pull-right form-group">
+                    <label for="edit-mail" class="form-required">&nbsp;</label>
+                    <input type="button" name="btnStep5Prev" id="btnStep5Prev" class="prev action-button " value="Previous" runat="server">
+                    <input type="button" name="SUBMIT" id="btnStep5Skip" class="prev action-button " onclick="SkipStep5();" value="Skip" runat="server">
+                    <input type="button" name="btnStep5Next" id="btnStep5Next" class="prev action-button" value="Next" runat="server">
+                </div>
+
+            </form>
+        </div>
+
+        <div class="card widget-container" id="step6" style="display:none">
+            <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                <h3 style=" font-size: 20px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Party Hall  Reservation</h3>
+                <h3 style=" font-size: 16px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Step - 6 : Cost and Payments</h3>
+
                 <div class="row">
 
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
                         <table class="table table-bordered" id="tblCosting">
                             <thead>
-                                <tr>
-                                    <th bgcolor="#003556" style="color:#FFFFFF" align="center" colspan="3">Costing</th>
-                                </tr>
                                 <tr>
                                     <th bgcolor="#003556" class="clrwhit">#</th>
                                     <th bgcolor="#003556" class="clrwhit">Description</th>
@@ -169,7 +421,9 @@
                             </thead>
                             <tbody>
 
-                               
+                                <tr>
+                                    <td bgcolor="#003556" style="color:#FFFFFF" align="center" colspan="3">Costing</td>
+                                </tr>
                                 <tr>
                                     <td>#</td>
                                     <td align="left">Hall Rent</td>
@@ -182,45 +436,27 @@
                                 </tr>
                                 <tr>
                                     <td>#</td>
-                                    <td align="left">Addition Service</td>
-                                    <td align="right"><span id="fsvsostingId">0.00</span></td>
+                                    <td align="left">Theme & Decoration</td>
+                                    <td align="right"><span id="themeCostingId">0.00</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#</td>
+                                    <td align="left">Additional Stalls</td>
+                                    <td align="right"><span id="stallCostingId">0.00</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#</td>
+                                    <td align="left">Transport &; Vehicle</td>
+                                    <td align="right"><span id="vehicleCostingId">0.00</span></td>
                                 </tr>
                                 <tr>
 
                                     <td align="right" colspan="2">Total Cost</td>
                                     <td align="right"><span id="totalCostId"></span></td>
                                 </tr>
-                               
-                               
-
-                            </tbody>
-                            
-                        </table>
-
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
-                        <table class="table table-bordered" id="tblPayment">
-                            <thead>
                                 <tr>
-                                    <th bgcolor="#003556" align="center" style="color:#FFFFFF" colspan="5">Payment</th>
+                                    <td bgcolor="#003556" align="center" style="color:#FFFFFF" colspan="3">Payment</td>
                                 </tr>
-                                <tr>
-                                    <th bgcolor="#003556" class="clrwhit">#</th>
-                                    <th bgcolor="#003556" class="clrwhit">Date</th>
-                                    <th bgcolor="#003556" class="clrwhit">Description</th>
-                                    <th bgcolor="#003556" class="clrwhit">Amount </th>
-                                    <th bgcolor="#003556" class="clrwhit"><input type="button" name="btnAddPay" class="prev action-button full-width mg-0 " onclick="AddPayment();" value="Add" runat="server">  </th>
-
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                                               
                                 @foreach (var pmt in Model.HallBookingPayment)
                                 {
                                     <tr id="@pmt.HallBookingPaymentId">
@@ -232,36 +468,116 @@
 
                                     </tr>
                                 }
-
                             </tbody>
-                            <tfoot>
-                                <tr>
-
-
-                                    <td  colspan="3" align="right" >Balance Amount</td>
-                                    <td  align="right" ><span id="totBalId"></span></td>
-
-
-                                </tr>
-                            </tfoot>
                         </table>
 
                     </div>
 
                 </div>
-
-                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-right form-group">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 pull-right form-group">
                     <label for="edit-mail" class="form-required">&nbsp;</label>
-                    <input type="button" name="SUBMIT" class="prev action-button full-width mg-0 " onclick="SaveHallBooking(this);" value="Reserve" runat="server">
+                    <input type="button" name="btnStep6Prev" id="btnStep6Prev" class="prev action-button " value="Previous" runat="server">
+                    <input type="button" name="SUBMIT" class="prev action-button " onclick="SaveHallBooking(this);" value="Modify" runat="server">
                 </div>
+
 
             </form>
         </div>
+
+        
     </div>
 </div>
+
+<div class="modal fade" id="reason_for_modal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="width:180% !important">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <center> Skip Confirmation </center>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body panel-body">
+                <center>
+                    <br><br>
+                    <p> <strong> You are skiping the Theme and Decoraton selection </strong> </p>
+
+                </center>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="col-sm-15">
+                    <div class="form-group">
+                        <button type="button" id="btnCencelSkip" class="btn btn-success pull-right" data-dismiss="modal"> Cancel</button>
+                        <button type="button" id="btnSkip3" onclick="SkipStep3()" class="btn btn-danger pull-right" data-dismiss="modal">
+                            <span class="fa fa-check"></span>
+                            Skip
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     let HallBookingDetails= '' || [];
     $(document).ready(function () {
+       $("#Step1Next").on("click", function () {
+            $("#step1").css('display', 'none');
+            $("#step2").css('display', 'block');
+        });
+        $("#btnStep2Prev").on("click", function () {
+            $("#step1").css('display', 'block');
+            $("#step2").css('display', 'none');
+        });
+        $("#btnStep2Next").on("click", function () {
+            $("#step3").css('display', 'block');
+            $("#step2").css('display', 'none');
+        });
+
+        $("#btnStep3Prev").on("click", function () {
+            $("#step2").css('display', 'block');
+            $("#step3").css('display', 'none');
+        });
+        $("#btnStep3Next").on("click", function () {
+
+            var thSel = $("#hdnSelectedTheme").val();
+            if (thSel == '') {
+                $(document.body).append($("#reason_for_modal").clone());
+                $("#reason_for_modal").remove();
+                $("#reason_for_modal").modal('show');
+            } else {
+                $("#step4").css('display', 'block');
+                $("#step3").css('display', 'none');
+                AddPStoCosting();
+            }
+        });
+
+        $("#btnStep4Prev").on("click", function () {
+            $("#step3").css('display', 'block');
+            $("#step4").css('display', 'none');
+        });
+        $("#btnStep4Next").on("click", function () {
+            $("#step5").css('display', 'block');
+            $("#step4").css('display', 'none');
+            AddStalltoCosting();
+        });
+        $("#btnStep5Prev").on("click", function () {
+            $("#step4").css('display', 'block');
+            $("#step5").css('display', 'none');
+        });
+        $("#btnStep5Next").on("click", function () {
+            $("#step6").css('display', 'block');
+            $("#step5").css('display', 'none');
+            AddVehicletoCosting();
+        });
+
+        $("#btnStep6Prev").on("click", function () {
+            $("#step5").css('display', 'block');
+            $("#step6").css('display', 'none');
+        });
+
         $("#hRentCostId").change(function () {
             CalCulateTotal();
         });
@@ -280,7 +596,7 @@
         var totalFoodCost = Number(mCost) * Number(nPax);
         $("#fdCostingId").text(Number(totalFoodCost).toFixed(2));
         $("#fdCostingId").trigger("change");
-        AddPStoCosting();
+        //AddPStoCosting();
 
 
 
@@ -295,13 +611,8 @@
 
 
 
+        getBuffetMenuDetails(ArrMId[0]);
 
-        $("#SelBM").change(function () {
-            var ArrselectedValue = $(this).val().split("-");
-            selectedValue = ArrselectedValue[0];
-            getBuffetMenuDetails(selectedValue);
-        });
-        $("#SelBM").trigger('change');
 
         $("#HallBookingDate").datepicker({
             dateFormat: "mm-dd-yy",
@@ -326,27 +637,30 @@
                 //console.log("test"+GLBuffetMenuDetails);
                 GLBuffetMenuDetails.forEach((itm, itmIndex) => {
 
-                    trItems += ' <tr><th width = "20%" align = "left" BuffetMenuId="' + itm.BuffetMenuId + '" id="' + itm.CategoryId + '" opt="' + itm.MenuOption + '" valign = "middle" bgcolor = "#003556" class="clrwhit" > <a href="#">' + itm.BuffetMenuCategory + ' - Any (' + itm.MenuOption + ')' + '</a></th>';
-                    trItems += '<td><ul>';
+                    trItems += ' <tr>    ';
+                    trItems += '<td style="padding:10px 15px !important"><ul class="menulist"> <h3>' + itm.BuffetMenuCategory + ' </h3>';
                     var itemIds = "'";
                     var headingIds;
-
                     itm.ItemDetails.forEach((itm1, itmIndex) => {
                         itemIds = itemIds + itm1.ItemId + "-";
                         headingIds = itm1.HeadingId;
+                        var chkid = 'CHK_' + itm1.ItemId;
                         var isSelected = '';
                         var isfound = isAlreadySelected(itm1.ItemId);
                         if (isfound) {
                             isSelected = "checked=checked";
                         }
-                        //console.log("Found " + isfound);
-                        trItems += '<li align="left" bfmItemid="' + itm1.BuffetMenuItemId + '" bfmid="' + itm1.BuffetMenuId + '" id="' + itm1.ItemId + '" hId="' + itm1.HeadingId + '" valign="middle">' + itm1.ItemName + '<input type="checkbox" ' + isSelected +' bfmItemid="' + itm1.BuffetMenuItemId + '" bfmid="' + itm1.BuffetMenuId + '" id="' + itm1.ItemId + '" hId="' + itm1.HeadingId + '" value="' + itm1.ItemName + '" name="' + itm.BuffetMenuId + '" onclick="checkSelection(this,' + itm.MenuOption + ');" /></li>';
+                        trItems += '<li align="left"  valign="middle">';
+                        trItems += '<input type="checkbox" ' + isSelected +' class="styled-checkbox"  bfmItemid="' + itm1.BuffetMenuItemId + '" bfmid="' + itm1.BuffetMenuId + '" id="' + chkid + '" hId="' + itm1.HeadingId + '" value="' + itm1.ItemName + '" name="' + itm.BuffetMenuId + '" onclick="checkSelection(this,' + itm.MenuOption + ');" /><label for="' + chkid + '">' + itm1.ItemName + '</label></li>';
 
                     });
                     itemIds = itemIds + "'"
                     trItems += '</ul></td>';
-                   // trItems += '<td align="left" id="XXX" valign="middle" class="text-right"><a href="#" onclick="EditCategory(' + itm.MenuOption + ',' + itm.CategoryId + ',' + headingIds + ',' + itemIds + ');" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>';
+                    //trItems += '<td align="left" id="XXX" valign="middle" class="text-right"><a href="#" onclick="EditCategory(' + itm.MenuOption + ',' + itm.CategoryId + ',' + headingIds + ',' + itemIds + ');" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>';
                     trItems += '</tr>';
+
+
+                    
                 });
                 $("#tblBFM tbody").empty();
                 $("#tblBFM tbody").append(trItems);
@@ -378,18 +692,15 @@
         var itemsId = [];
         var rtnVal = false;
         //console.log(itemId);
-        var Arr = '@Model.HallBookingDetails';
-
-        var ArrItems = Arr.split('$');
+       
+        var ArrItems1='@Model.HallBookingDetails';
+        var ArrItems = ArrItems1.split(',');
         //console.log(ArrItems);
         ArrItems.forEach((itm, itmIndex) => {
-            var itmArr = itm.split('#');
-            //console.log(itmArr);
-            var fItems = itmArr[1].split(',');
-            fItems.forEach((itm1, itmIndex) => {
-                itemsId.push(Number(itm1));
 
-            });
+            itemsId.push(Number(itm.substring(4)));
+
+
         });
         //console.log(itemsId);
         var index = $.inArray(itemId, itemsId);
@@ -433,8 +744,11 @@
         var month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
         var year = currentDate.getFullYear();
         var formattedDate = month + '-' + day + '-' + year;
-        console.log(formattedDate); // Outputs: dd-mm-yyyy
-
+        //console.log(formattedDate); // Outputs: dd-mm-yyyy
+        var sts = 'HOLD';
+        if (balAmt <= 0) {
+            sts = 'CONFIRMED';
+        }
         var HallBooking = {
             HallBookingId:@Model.HallBookingId,
             CustomerName: cName,
@@ -526,46 +840,98 @@
 
         HallBooking.HallBookingCosting.push(foodCosting);
 
-        $("#tblPS tbody> tr").each(function (idx) {
+        $("#tblTheme tbody> tr").each(function (idx) {
 
-            var svsCosting = {
-                HallBookingCostId: 0,
-                HallBookingId: @Model.HallBookingId,
-                HallId: Number(hId),
-                Description: mName,
-                DATE: bDate,
-                COST: mCost,
-                OfferPrice: mCost,
-                TAX: 0.00,
-                TaxAmount: 0.00,
-                Status: 'SVC',
-                BranchId: BranchId
+    var sel = $(this).attr("themeselected");
+    //console.log(sel);
+    if (sel == "YES") {
+        const title = $(this).attr("name");
+        const cost = $(this).attr("COST");
+        const tax = $(this).attr("TAX");
+        const taxAmount = $(this).attr("TaxAmount");
+        const svcId = $(this).attr("id");
+
+
+        var svsCosting = {
+            HallBookingCostId: 0,
+            HallBookingId: 0,
+            HallId: Number(hId),
+            ServiceId: Number(svcId),
+            Description: title,
+            DATE: bDate,
+            COST: cost,
+            OfferPrice: cost,
+            TAX: tax,
+            TaxAmount:taxAmount,
+            Status: 'SVC',
+            BranchId: BranchId
+
+        }
+        HallBooking.HallBookingCosting.push(svsCosting);
+    }
+
+
+
+        });
+
+        $("#tblStalls tbody> tr").each(function (idx) {
+
+
+            if ($(this).find('input[type="checkbox"]').is(':checked')) {
+                var chk = $(this).find('input[type="checkbox"]');
+                const title = $(chk).attr("name");
+                const cost = $(chk).attr("COST");
+                const tax = $(chk).attr("TAX");
+                const taxAmount = $(chk).attr("TaxAmount");
+                const svcId = $(chk).attr("svcid");
+                var svsCosting = {
+                    HallBookingCostId: 0,
+                    HallBookingId: 0,
+                    HallId: Number(hId),
+                    ServiceId: Number(svcId),
+                    Description: title,
+                    DATE: bDate,
+                    COST: cost,
+                    OfferPrice: cost,
+                    TAX: tax,
+                    TaxAmount: taxAmount,
+                    Status: 'SVC',
+                    BranchId: BranchId
+
+                }
+                HallBooking.HallBookingCosting.push(svsCosting);
 
             }
+        });
 
-            $(this).find('td').each(function (index) {
+        $("#tblVehicle tbody> tr").each(function (idx) {
 
-                if (index == 1) {
-                    $(this).find("input").each(function () {
-                        var txtDesc = $(this).val();
-                        console.log("Testing..." + txtDesc);
-                        svsCosting.Description = txtDesc;
-                    });
+
+            if ($(this).find('input[type="checkbox"]').is(':checked')) {
+                var chk = $(this).find('input[type="checkbox"]');
+                const title = $(chk).attr("name");
+                const cost = $(chk).attr("COST");
+                const tax = $(chk).attr("TAX");
+                const taxAmount = $(chk).attr("TaxAmount");
+                const svcId = $(chk).attr("svcId");
+                var svsCosting = {
+                    HallBookingCostId: 0,
+                    HallBookingId: 0,
+                    HallId: Number(hId),
+                    ServiceId: Number(svcId),
+                    Description: title,
+                    DATE: bDate,
+                    COST: cost,
+                    OfferPrice: cost,
+                    TAX: tax,
+                    TaxAmount: taxAmount,
+                    Status: 'SVC',
+                    BranchId: BranchId
 
                 }
-                if (index == 2) {
-                    $(this).find("input").each(function () {
-                        var txtCost = $(this).val();
-                        console.log("Testing..." + txtCost);
-                        svsCosting.COST = Number(txtCost).toFixed(2);
-                        svsCosting.OfferPrice = Number(txtCost).toFixed(2);
-                    });
+                HallBooking.HallBookingCosting.push(svsCosting);
 
-                }
-
-
-            });
-            HallBooking.HallBookingCosting.push(svsCosting);
+            }
         });
         $("#tblPayment tbody> tr").each(function (idx) {
             var id = this.id;
@@ -603,9 +969,10 @@
             });
             HallBooking.HallBookingPayment.push(pmtDetail);
         });
-            
+
 
         console.log(HallBooking);
+        //return false;
         fetch('/Home/SaveHallBooking', {
             method: 'POST',
             headers: {
@@ -700,37 +1067,61 @@
     }
     function AddPStoCosting() {
         var totalServiceCost = 0;// Number($("#fsvsostingId").text());
-        //console.log("totalServiceCost..." + totalServiceCost);
+        console.log("totalServiceCost..." + totalServiceCost);
         $("#fsvsostingId").text('');
-        $("#tblPS tbody > tr").each(function (idx) {
+        $("#tblTheme tbody > tr").each(function (idx) {
+            var sel = $(this).attr("themeselected");
+            console.log(sel);
+            if (sel == "YES") {
+                var itemCost = $(this).attr("COST");
 
-            var itemCost = 0;
+                totalServiceCost += Number(itemCost);
+            }
 
-            $(this).find('td').each(function (index) {
+        });
+        //console.log("cost  :" + Number(totalServiceCost).toFixed(2));
+        $("#themeCostingId").text(Number(totalServiceCost).toFixed(2));
+        $("#fdCostingId").trigger("change");
 
-                if (index == 2) {
-                   $(this).find("input").each(function () {
-                        itemCost = $(this).val();
-                        //console.log("Testing..." + itemCost);
-                        totalServiceCost += Number(itemCost);
+    }
+    function AddStalltoCosting() {
+        var totalServiceCost = 0;// Number($("#fsvsostingId").text());
+        console.log("totalServiceCost..." + totalServiceCost);
+        $("#stallCostingId").text('');
+        $("#tblStalls tbody > tr").each(function (idx) {
 
-                    });
+            if ($(this).find('input[type="checkbox"]').is(':checked')) {
+                var chk = $(this).find('input[type="checkbox"]');
 
-                }
+                var itemCost = $(chk).attr("COST");
+                totalServiceCost += Number(itemCost);
 
-
-            });
-
-
-
+            }
 
 
         });
         //console.log("cost  :" + Number(totalServiceCost).toFixed(2));
-        $("#fsvsostingId").text(Number(totalServiceCost).toFixed(2));
+        $("#stallCostingId").text(Number(totalServiceCost).toFixed(2));
         $("#fdCostingId").trigger("change");
 
+    }
+    function AddVehicletoCosting() {
+        var totalServiceCost = 0;// Number($("#fsvsostingId").text());
+        console.log("totalServiceCost..." + totalServiceCost);
+        $("#vehicleCostingId").text('');
+        $("#tblVehicle tbody > tr").each(function (idx) {
+            if ($(this).find('input[type="checkbox"]').is(':checked')) {
+                var chk = $(this).find('input[type="checkbox"]');
 
+                var itemCost = $(chk).attr("COST");
+                totalServiceCost += Number(itemCost);
+
+            }
+
+        });
+        //console.log("cost  :" + Number(totalServiceCost).toFixed(2));
+        $("#vehicleCostingId").text(Number(totalServiceCost).toFixed(2));
+        $("#fdCostingId").trigger("change");
 
     }
     function AddPS() {
@@ -762,5 +1153,29 @@
     function RemovePay(tt) {
         $(tt).closest("tr").remove();
         CalCulateTotal();
+    }
+
+    function SelectTheme(ths) {
+
+
+        //selItem = id + '|' + Name + '|' + cst + '|' + tx + '|' + txamt;
+        console.log(ths.id);
+
+        $("#hdnSelectedTheme").val(ths.id);
+
+    }
+    $('#tblTheme tr').click(function (e) {
+        $('#tblTheme tr').removeClass('highlighted');
+        $('#tblTheme tr').attr("ThemeSelected", "NO");
+        $(this).attr("ThemeSelected", "YES");
+        $(this).addClass('highlighted');
+        AddPStoCosting();
+    });
+
+    function SkipStep3() {
+
+        $("#step4").css('display', 'block');
+        $("#step3").css('display', 'none');
+        $("#hdnSelectedTheme").val('');
     }
 </script>
